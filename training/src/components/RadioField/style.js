@@ -6,4 +6,8 @@ ${(props) => props.error
         && css`
 border: 1px solid red;
 `};`;
-export { Input };
+
+const Error = styled.p`
+color: red;
+`;
+export { Input, Error };
