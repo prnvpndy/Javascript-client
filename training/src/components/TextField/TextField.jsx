@@ -14,10 +14,11 @@ class TextField extends Component {
             inputProps.value = value;
         }
         return (
-            <> 
-            <Input type= "text" value={ value } disabled={ disabled } inputProps={ inputProps} />
-        {error && <Error>{error}</Error>}
-            </>);
+            <>
+            <Input type="text" {...inputProps} />
+            {error && <Error>{error}</Error>}
+            </>
+            );
     }
 
     }
