@@ -15,7 +15,7 @@ class TextFieldDemo extends Component {
           < TextField value="Accessible"/>
 
           <p><b>An Input With Errors</b></p>
-          < TextField value="101" error="Cloud not be greater than"/>
+          < TextField value="101" error/>
           </Div>
           </>
       )
