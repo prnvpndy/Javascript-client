@@ -15,7 +15,7 @@ class TextField extends Component {
         }
         return (
             <> 
-            <Input type= "text" value={ value } disabled={ disabled } />
+            <Input type= "text" value={ value } disabled={ disabled } inputProps={ inputProps} />
         {error && <Error>{error}</Error>}
             </>);
     }
