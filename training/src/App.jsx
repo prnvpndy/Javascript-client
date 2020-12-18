@@ -1,9 +1,10 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { InputDemo } from './pages';
+import React from 'react';
+import { ChildrenDemo } from './pages';
 
 function App() {
   return (
-    <InputDemo />
+    <ChildrenDemo />
   );
 }
+
 export default App;
