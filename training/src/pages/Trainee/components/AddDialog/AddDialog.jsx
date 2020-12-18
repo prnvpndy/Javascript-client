@@ -20,7 +20,8 @@ const passwordStyle = () => ({
 
 const constant = {
   Name: Person,
-  Email,
+  // eslint-disable-next-line object-shorthand
+  Email: Email,
   Password: VisibilityOff,
   'Confirm Password': VisibilityOff,
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Trainee } from './pages';
+import { Login } from './pages';
 
 function App() {
   return (
-    <Trainee />
+    <Login />
   );
 }
 
