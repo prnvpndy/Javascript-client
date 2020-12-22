@@ -1,10 +1,35 @@
 import React from 'react';
-import { Login } from './pages';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from 'react-router-dom';
+import {
+  TextFieldDemo,
+  InputDemo,
+  Trainee,
+  ChildrenDemo,
+  Login,
+  NotFound,
+} from './pages/index';
+import { AuthRoute, PrivateRoute } from './routes/index';
 
-function App() {
-  return (
-    <Login />
-  );
-}
-
+const App = () => (
+  <div>
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/Trainee" />
+        </Route>
+        <AuthRoute path="/login" component={Login} />
+        <PrivateRoute path="/ChildrenDemo" component={ChildrenDemo} />
+        <PrivateRoute path="/TextFieldDemo" component={TextFieldDemo} />
+        <PrivateRoute path="/InputDemo" component={InputDemo} />
+        <PrivateRoute path="/trainee" component={Trainee} />
+        <PrivateRoute component={NotFound} />
+      </Switch>
+    </Router>
+  </div>
+);
 export default App;

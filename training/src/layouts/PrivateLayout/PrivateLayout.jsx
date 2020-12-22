@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Footer } from '../components/index';
+import { NavBar } from '../components/index';
 
 // eslint-disable-next-line no-unused-vars
-const AuthLayout = ({ children, ...rest }) => (
+const PrivateLayout = ({ children, ...rest }) => (
   <div>
+    <NavBar />
+    <br />
     <div>{children}</div>
     &nbsp;
-    &nbsp;
-    <Footer />
   </div>
 );
-AuthLayout.propTypes = {
+PrivateLayout.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   children: PropTypes.object.isRequired,
 };
 
-export default AuthLayout;
+export default PrivateLayout;
