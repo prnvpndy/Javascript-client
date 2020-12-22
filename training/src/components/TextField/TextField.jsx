@@ -6,17 +6,19 @@ import { Error, Input } from './style';
 // eslint-disable-next-line react/prefer-stateless-function
 class TextField extends Component {
   render() {
-    const { value, error, onChange } = this.props;
+    const {
+      value, error, onChange, onBlur,
+    } = this.props;
     if (error) {
       return (
         <>
-          <Input type="text" value={value} error onChange={onChange} />
+          <Input type="text" value={value} error onChange={onChange} onBlur={onBlur} />
           <Error>{error}</Error>
         </>
       );
     }
     return (
-      <Input type="text" value={value} onChange={onChange} />
+      <Input type="text" value={value} onChange={onChange} onBlur={onBlur} />
     );
   }
 }
@@ -27,6 +29,7 @@ TextField.propTypes = {
   // disabled: propTypes.bool,
   error: propTypes.string,
   onChange: propTypes.func,
+  onBlur: propTypes.string.isRequired,
 
 };
 
