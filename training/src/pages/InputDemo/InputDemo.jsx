@@ -16,7 +16,6 @@ class InputDemo extends React.Component {
 
     handleNameChange = (e) => {
       this.setState({ name: e.target.value }, () => {
-        console.log(this.state);
       });
     }
 
