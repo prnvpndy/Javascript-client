@@ -1,5 +1,4 @@
 import React from 'react';
-import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import {
   TextField, CssBaseline, Card, Typography, Avatar,
