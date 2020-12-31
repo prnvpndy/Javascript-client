@@ -23,16 +23,13 @@ class TextField extends Component {
   }
 }
 export default TextField;
-
 TextField.propTypes = {
   value: propTypes.string.isRequired,
   // disabled: propTypes.bool,
   error: propTypes.string,
   onChange: propTypes.func,
   onBlur: propTypes.string.isRequired,
-
 };
-
 TextField.defaultProps = {
   // disabled: false,
   error: '',
