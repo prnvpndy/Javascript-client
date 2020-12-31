@@ -1,9 +1,9 @@
 import React from 'react';
-import { Login } from './pages';
+import { NavBar } from './pages/components';
 
 function App() {
   return (
-    <Login />
+    <NavBar />
   );
 }
 
