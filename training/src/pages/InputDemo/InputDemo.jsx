@@ -33,7 +33,6 @@ class InputDemo extends React.Component {
 
     handleNameChange = (e) => {
       this.setState({ name: e.target.value }, () => {
-        console.log(this.state);
       });
     }
 
@@ -50,7 +49,7 @@ class InputDemo extends React.Component {
       return sport === 'cricket' ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
     }
 
-    RadioOption = () => {
+    radioOption = () => {
       let { radioValue } = this.state;
       const { sport } = this.state;
       if (sport === 'cricket') {
