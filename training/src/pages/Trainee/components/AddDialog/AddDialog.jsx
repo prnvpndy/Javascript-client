@@ -7,16 +7,7 @@ import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import Handler from './Handler';
-
-const passwordStyle = () => ({
-  passfield: {
-    display: 'flex',
-    flexdirection: 'row',
-  },
-  pass: {
-    flex: 1,
-  },
-});
+import passwordStyle from './style';
 
 const constant = {
   Name: Person,
