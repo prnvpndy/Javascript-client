@@ -3,15 +3,7 @@ import PropTypes from 'prop-types';
 import {
   AppBar, Toolbar, Typography, CssBaseline, Button, withStyles,
 } from '@material-ui/core';
-
-const style = () => ({
-  title: {
-    flexGrow: 1,
-  },
-  logout: {
-    flexGrow: 0.05,
-  },
-});
+import style from './style';
 
 function NavBar(props) {
   const { classes } = props;
