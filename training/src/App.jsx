@@ -1,9 +1,9 @@
 import React from 'react';
-import { Trainee } from './pages';
+import { NavBar } from './pages/components';
 
 function App() {
   return (
-    <Trainee />
+    <NavBar />
   );
 }
 
