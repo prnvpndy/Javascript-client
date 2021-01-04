@@ -8,7 +8,6 @@ const hasErrors = () => {
   }
   return false;
 };
-
 // eslint-disable-next-line consistent-return
 const getError = (field) => {
   const { touched } = this.state;
@@ -21,7 +20,6 @@ const getError = (field) => {
     }
   }
 };
-
 const isTouched = (field) => {
   const { touched } = this.state;
   this.setState({
@@ -31,7 +29,6 @@ const isTouched = (field) => {
     },
   });
 };
-
 const passwordType = (key) => {
   if (key === 'Password' || key === 'Confirm Password') {
     return 'password';

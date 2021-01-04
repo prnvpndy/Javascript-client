@@ -7,6 +7,9 @@ import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import Handler from './Handler';
 import passwordStyle from './style';
+import {
+  passwordType, isTouched, getError, hasErrors,
+} from './validation';
 
 const constant = {
   Name: Person,
