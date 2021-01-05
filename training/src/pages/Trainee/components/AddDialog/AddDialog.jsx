@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react/no-unused-state */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -6,11 +7,12 @@ import {
 } from '@material-ui/core';
 import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import schema from './DialogSchema';
 import Handler from './Handler';
 import passwordStyle from './style';
 import {
-  passwordType, isTouched, getError, hasErrors,
-} from './validation';
+  hasErrors, passwordType,
+} from './helper';
 
 const constant = {
   Name: Person,
@@ -41,6 +43,28 @@ class AddDialog extends React.Component {
     this.setState({ [key]: value });
   };
 
+  getError = (field) => {
+    const { touched } = this.state;
+    if (touched[field] && hasErrors()) {
+      try {
+        schema.validateSyncAt(field, this.state);
+        return '';
+      } catch (err) {
+        return err.message;
+      }
+    }
+  };
+
+  isTouched = (field) => {
+    const { touched } = this.state;
+    this.setState({
+      touched: {
+        ...touched,
+        [field]: true,
+      },
+    });
+  }
+
   render() {
     const {
       open, onClose, onSubmit, classes,
@@ -55,7 +79,7 @@ class AddDialog extends React.Component {
         helperText={this.getError(key)}
         error={!!this.getError(key)}
         icons={constant[key]}
-        type={this.passwordType(key)}
+        type={passwordType(key)}
       />);
     });
 
@@ -88,7 +112,7 @@ class AddDialog extends React.Component {
           &nbsp;
             <div align="right">
               <Button onClick={onClose} color="primary">CANCEL</Button>
-              <Button variant="contained" color="primary" disabled={this.hasErrors()} onClick={() => onSubmit()({ name, email, password })}>SUBMIT</Button>
+              <Button variant="contained" color="primary" disabled={hasErrors(this.state)} onClick={() => onSubmit()({ name, email, password })}>SUBMIT</Button>
             </div>
           </DialogContent>
         </Dialog>

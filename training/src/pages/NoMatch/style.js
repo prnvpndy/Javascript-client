@@ -1,4 +1,4 @@
-import { withStyles, createMuiTheme } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core';
 
 const styles = () => ({
   Text: {
@@ -14,4 +14,4 @@ const theme = createMuiTheme({
     ].join(','),
   },
 });
-export default withStyles(styles)(theme);
+export { styles, theme };
