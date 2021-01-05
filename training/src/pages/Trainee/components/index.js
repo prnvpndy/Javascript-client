@@ -1,1 +1,1 @@
-export { AddDialog } from './AddDialog';
+export { AddDialog } from './AddDialog/index';
