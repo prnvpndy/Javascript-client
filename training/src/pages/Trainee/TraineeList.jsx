@@ -4,15 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/index';
 import trainees from './data/trainee';
-
-const useStyles = (theme) => ({
-  root: {
-    margin: theme.spacing(2),
-  },
-  dialog: {
-    textAlign: 'right',
-  },
-});
+import useStyles from './traineeStyle';
 
 class TraineeList extends React.Component {
   constructor(props) {

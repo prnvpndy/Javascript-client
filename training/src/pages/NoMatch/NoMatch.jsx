@@ -1,23 +1,10 @@
 import React from 'react';
 import PropType from 'prop-types';
 import {
-  withStyles, createMuiTheme, ThemeProvider, Typography,
+  withStyles, ThemeProvider, Typography,
 } from '@material-ui/core';
+import { styles, theme } from './style';
 
-const styles = () => ({
-  Text: {
-    color: 'grey',
-  },
-});
-
-const theme = createMuiTheme({
-  typography: {
-    htmlFontSize: 10,
-    fontFamily: [
-      'Arial',
-    ].join(','),
-  },
-});
 function NotFound(props) {
   const { classes } = props;
   return (
