@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import trainees from './data/trainee';
 import NotFound from '../NoMatch';
-import style from './traineeStyle';
+import { style } from './traineeStyle';
 
 function TraineeDetails(props) {
   const { classes } = props;

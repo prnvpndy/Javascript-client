@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
@@ -6,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import trainees from './data/trainee';
-import useStyles from './traineeStyle';
+import { useStyles } from './traineeStyle';
 
 class TraineeList extends React.Component {
   constructor(props) {
@@ -24,14 +25,8 @@ class TraineeList extends React.Component {
     };
   }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    const { open } = this.state;
-    this.setState({ open: false });
-    return open;
+  handleClick = (open) => {
+    this.setState({ open });
   };
 
   handleSubmit = (data) => {
@@ -111,17 +106,17 @@ class TraineeList extends React.Component {
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData,
+      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData, deleteData,
     } = this.state;
     const { classes } = this.props;
     return (
       <>
         <div className={classes.root}>
           <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+            <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
               ADD TRAINEELIST
             </Button>
-            <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+            <AddDialog open={open} onClose={() => this.handleClick(false)} onSubmit={() => this.handleSubmit(false)} />
           </div>
           &nbsp;
           &nbsp;
@@ -133,9 +128,10 @@ class TraineeList extends React.Component {
           />
           <br />
           <DeleteDialog
-            openRemove={RemoveOpen}
+            data={deleteData}
             onClose={this.handleRemoveClose}
-            remove={this.handleRemove}
+            onSubmit={this.handleRemove}
+            open={RemoveOpen}
           />
           <br />
           <br />
