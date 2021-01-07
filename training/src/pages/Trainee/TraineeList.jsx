@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/index';
 import trainees from './data/trainee';
-import useStyles from './traineeStyle';
+import { useStyles } from './traineeStyle';
 
 class TraineeList extends React.Component {
   constructor(props) {
@@ -14,48 +14,46 @@ class TraineeList extends React.Component {
     };
   }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
+handleClick = (open) => {
+  this.setState({ open });
+}
 
-  handleClose = () => {
-    const { open } = this.state;
-    this.setState({ open: false });
-    return open;
-  };
+handleSubmit = (data) => {
+  this.setState({
+    open: false,
+  }, () => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+  });
+}
 
-  handleSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-      // eslint-disable-next-line no-console
-      console.log(data);
-    });
-  }
-
-  render() {
-    const { open } = this.state;
-    const { match: { url }, classes } = this.props;
-    return (
-      <>
-        <div className={classes.root}>
-          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-            ADD TRAINEELIST
-          </Button>
-          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
-          <ul>
-            {trainees.map(({ name, id }) => (
-              <li key={id}>
-                <Link to={`${url}/${id}`}>
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </>
-    );
-  }
+render() {
+  const { open } = this.state;
+  const { match: { url }, classes } = this.props;
+  return (
+    <>
+      <div className={classes.root}>
+        <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
+          ADD TRAINEELIST
+        </Button>
+        <AddDialog
+          open={open}
+          onClose={() => this.handleClick(false)}
+          onSubmit={() => this.handleSubmit(false)}
+        />
+        <ul>
+          {trainees.map(({ name, id }) => (
+            <li key={id}>
+              <Link to={`${url}/${id}`}>
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+}
 }
 TraineeList.propTypes = {
   match: PropTypes.objectOf(PropTypes.object).isRequired,

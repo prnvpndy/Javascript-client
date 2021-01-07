@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
@@ -9,7 +7,7 @@ import {
 } from '@material-ui/core';
 import trainees from './data/trainee';
 import NotFound from '../NoMatch';
-import style from './traineeStyle';
+import { style } from './traineeStyle';
 
 function TraineeDetails(props) {
   const { classes } = props;
