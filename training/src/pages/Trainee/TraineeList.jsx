@@ -22,7 +22,6 @@ handleSubmit = (data) => {
   this.setState({
     open: false,
   }, () => {
-    // eslint-disable-next-line no-console
     console.log(data);
   });
 }
