@@ -8,15 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { trainees } from './data/trainee';
-
-const useStyles = (theme) => ({
-  root: {
-    margin: theme.spacing(2),
-  },
-  dialog: {
-    textAlign: 'right',
-  },
-});
+import { useStyles } from './traineeStyle';
 
 class TraineeList extends React.Component {
   constructor(props) {
