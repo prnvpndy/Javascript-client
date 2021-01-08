@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
@@ -6,8 +7,16 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
-import trainees from './data/trainee';
-import { useStyles } from './traineeStyle';
+import { trainees } from './data/trainee';
+
+const useStyles = (theme) => ({
+  root: {
+    margin: theme.spacing(2),
+  },
+  dialog: {
+    textAlign: 'right',
+  },
+});
 
 class TraineeList extends React.Component {
   constructor(props) {
@@ -33,19 +42,16 @@ class TraineeList extends React.Component {
     this.setState({
       open: false,
     }, () => {
-      // eslint-disable-next-line no-console
       console.log('Data :', data);
     });
   }
 
   handleSelect = (event) => {
-    // eslint-disable-next-line no-console
     console.log(event);
   };
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
-    // eslint-disable-next-line no-console
     console.log(event);
     this.setState({
       orderBy: field,
@@ -59,7 +65,6 @@ class TraineeList extends React.Component {
     });
   };
 
-  // eslint-disable-next-line no-unused-vars
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
       RemoveOpen: true,
@@ -113,10 +118,14 @@ class TraineeList extends React.Component {
       <>
         <div className={classes.root}>
           <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
+            <Button variant="outlined" color="primary" onClick={() => this.handleClicl(true)}>
               ADD TRAINEELIST
             </Button>
-            <AddDialog open={open} onClose={() => this.handleClick(false)} onSubmit={() => this.handleSubmit(false)} />
+            <AddDialog
+              open={open}
+              onClose={() => this.handleClickOpen(false)}
+              onSubmit={() => this.handleSubmit(false)}
+            />
           </div>
           &nbsp;
           &nbsp;

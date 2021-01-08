@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -11,7 +12,7 @@ function TableComponent(props) {
     classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
     rowsPerPage, onChangePage,
   } = props;
-
+  console.log('Data', data.trainees);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
@@ -35,7 +36,7 @@ function TableComponent(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.trainees.map((element) => (
+          {data.map((element) => (
             <TableRow
               key={element.id}
               className={classes.root}

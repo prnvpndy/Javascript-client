@@ -7,7 +7,7 @@ import moment from 'moment';
 import {
   withStyles, Card, CardContent, Typography, CardMedia, Button,
 } from '@material-ui/core';
-import trainees from './data/trainee';
+import { trainees } from './data/trainee';
 import NotFound from '../NoMatch';
 import { style } from './traineeStyle';
 
