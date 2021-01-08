@@ -3,16 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Table, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles, TableBody,
 } from '@material-ui/core';
-
-const useStyles = () => ({
-  table: {
-    minWidth: 650,
-  },
-  header: {
-    color: 'grey',
-  },
-
-});
+import useStyles from './style';
 
 function TableComponent(props) {
   const { classes, data, column } = props;
