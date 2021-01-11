@@ -29,13 +29,8 @@ handleSubmit = (data) => {
   });
 }
 
-  handleSelect = (event) => {
-    console.log(event);
-  };
-
   handleSort = (field) => (event) => {
     const { order } = this.state;
-    console.log(event);
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
