@@ -1,5 +1,4 @@
 /* eslint-disable consistent-return */
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -49,11 +48,11 @@ class Login extends React.Component {
         hasError: true,
       });
       const response1 = await callApi(data, 'post', '/user/login');
-      window.localStorage.setItem('token', response1.data);
+      localStorage.set('token', response1.data);
       this.setState({ loading: false });
       const response = localStorage.get('token');
-      console.log('response :', response.data);
-      if (response !== 'undefined') {
+      console.log('response :', response);
+      if (response === 200) {
         this.setState({
           redirect: true,
           hasError: false,

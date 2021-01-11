@@ -110,12 +110,12 @@ class TraineeList extends React.Component {
       <>
         <div className={classes.root}>
           <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={() => this.handleClicl(true)}>
+            <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
               ADD TRAINEELIST
             </Button>
             <AddDialog
               open={open}
-              onClose={() => this.handleClickOpen(false)}
+              onClose={() => this.handleClick(false)}
               onSubmit={() => this.handleSubmit(false)}
             />
           </div>

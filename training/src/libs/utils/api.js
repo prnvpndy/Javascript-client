@@ -12,7 +12,7 @@ method,
 url: baseUrl,
 data,
 headers: {
-authorization: widonw.localStorage.getItem('token'),
+authorization: localStorage.get('token'),
 },
 });
 return response.data;
