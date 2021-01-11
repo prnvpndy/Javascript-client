@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/index';
+import { TableComponent } from '../../components';
 import trainees from './data/trainee';
 import { useStyles } from './traineeStyle';
 
@@ -32,13 +34,30 @@ render() {
   return (
     <>
       <div className={classes.root}>
-        <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
-          ADD TRAINEELIST
-        </Button>
-        <AddDialog
-          open={open}
-          onClose={() => this.handleClick(false)}
-          onSubmit={() => this.handleSubmit(false)}
+        <div className={classes.dialog}>
+          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+            ADD TRAINEELIST
+          </Button>
+          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+        </div>
+          &nbsp;
+          &nbsp;
+        <TableComponent
+          id="id"
+          data={trainees}
+          column={
+            [
+              {
+                field: 'name',
+                label: 'Name',
+                align: 'center',
+              },
+              {
+                field: 'email',
+                label: 'Email Address',
+              },
+            ]
+          }
         />
         <ul>
           {trainees.map(({ name, id }) => (
