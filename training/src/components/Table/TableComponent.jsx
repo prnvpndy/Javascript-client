@@ -4,25 +4,7 @@ import {
   Table, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles, TableBody,
   TableSortLabel,
 } from '@material-ui/core';
-
-const useStyles = (theme) => ({
-  table: {
-    minWidth: 650,
-  },
-  header: {
-    color: 'grey',
-  },
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    '&:hover': {
-      backgroundColor: 'rgb(200,200,200)',
-      cursor: 'pointer',
-    },
-  },
-
-});
+import useStyles from './style';
 
 function TableComponent(props) {
   const {

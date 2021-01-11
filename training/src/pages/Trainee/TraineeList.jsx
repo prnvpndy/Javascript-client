@@ -1,18 +1,11 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/index';
 import { TableComponent } from '../../components';
 import trainees from './data/trainee';
-
-const useStyles = (theme) => ({
-  root: {
-    margin: theme.spacing(2),
-  },
-  dialog: {
-    textAlign: 'right',
-  },
-});
+import { useStyles } from './traineeStyle';
 
 class TraineeList extends React.Component {
   constructor(props) {
@@ -24,33 +17,24 @@ class TraineeList extends React.Component {
     };
   }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
+handleClick = (open) => {
+  this.setState({ open });
+}
 
-  handleClose = () => {
-    const { open } = this.state;
-    this.setState({ open: false });
-    return open;
-  };
-
-  handleSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-      // eslint-disable-next-line no-console
-      console.log(data);
-    });
-  }
+handleSubmit = (data) => {
+  this.setState({
+    open: false,
+  }, () => {
+    console.log(data);
+  });
+}
 
   handleSelect = (event) => {
-    // eslint-disable-next-line no-console
     console.log(event);
   };
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
-    // eslint-disable-next-line no-console
     console.log(event);
     this.setState({
       orderBy: field,
@@ -65,10 +49,14 @@ class TraineeList extends React.Component {
       <>
         <div className={classes.root}>
           <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+            <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
               ADD TRAINEELIST
             </Button>
-            <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+            <AddDialog
+              open={open}
+              onClose={() => this.handleClick(false)}
+              onSubmit={() => this.handleSubmit}
+            />
           </div>
           &nbsp;
           &nbsp;

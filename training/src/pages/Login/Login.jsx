@@ -1,44 +1,24 @@
 import React from 'react';
-import * as yup from 'yup';
 import PropTypes from 'prop-types';
 import {
   TextField, CssBaseline, Card, Typography, Avatar,
   CardContent, withStyles, InputAdornment, Button,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
+import Design from './style';
 
-const Design = (theme) => ({
-  icon: {
-    background: 'red',
-    marginLeft: theme.spacing(22),
-    marginTop: theme.spacing(2),
-  },
-  main: {
-    width: 400,
-    marginTop: theme.spacing(20),
-    marginLeft: theme.spacing(58),
-  },
-});
 class Login extends React.Component {
-    schema = yup.object().shape({
-      email: yup.string()
-        .trim().email().required('Email Address is a required field'),
-      password: yup.string()
-        .required('Password is required')
-        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/, 'Must contain 8 characters, at least one uppercase letter, one lowercase letter and one number'),
-    });
-
-    constructor(props) {
-      super(props);
-      this.state = {
-        Email: '',
-        Password: '',
-        touched: {
-          email: false,
-          password: false,
-        },
-      };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      Email: '',
+      Password: '',
+      touched: {
+        email: false,
+        password: false,
+      },
+    };
+  }
 
     handleChange = (key) => ({ target: { value } }) => {
       this.setState({ [key]: value });
