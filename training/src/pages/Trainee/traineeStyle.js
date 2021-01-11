@@ -1,4 +1,4 @@
-const useStyles = (theme) => ({
+export const useStyles = (theme) => ({
   root: {
     margin: theme.spacing(2),
   },
@@ -6,7 +6,7 @@ const useStyles = (theme) => ({
     textAlign: 'right',
   },
 });
-const style = (theme) => ({
+export const style = (theme) => ({
   root: {
     display: 'flex',
     height: 160,
@@ -37,4 +37,3 @@ const style = (theme) => ({
     marginLeft: theme.spacing(80),
   },
 });
-export default { useStyles, style };
