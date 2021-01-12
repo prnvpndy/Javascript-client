@@ -82,13 +82,13 @@ class EditDialog extends React.Component {
 
   render() {
     const {
-      Editopen, handleEditClose, handleEdit, data, classes,
+      editOpen, handleEditClose, handleEdit, data, classes,
     } = this.props;
     const { name, email, error } = this.state;
     return (
       <div>
         <Dialog
-          open={Editopen}
+          open={editOpen}
           onClose={handleEditClose}
           onMouseEnter={this.handleSet}
           variant="outlined"
@@ -180,7 +180,7 @@ class EditDialog extends React.Component {
   }
 }
 EditDialog.propTypes = {
-  Editopen: PropTypes.bool.isRequired,
+  editOpen: PropTypes.bool.isRequired,
   handleEditClose: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
