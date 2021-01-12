@@ -29,7 +29,7 @@ class AddDialog extends React.Component {
       Name: '',
       Email: '',
       Password: '',
-      ConfirmPassword: '',
+      confirmPassword: '',
       touched: {
         name: false,
         email: false,

@@ -6,19 +6,19 @@ import { Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
-import { TableComponent } from '../../components';
+import { TableComponent } from '../../components/index';
 import trainees from './data/trainee';
 import { useStyles } from './traineeStyle';
 
-class TraineeList extends React.Component {
+class traineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       orderBy: '',
       order: 'asc',
-      EditOpen: false,
-      RemoveOpen: false,
+      editOpen: false,
+      removeOne: false,
       editData: {},
       deleteData: {},
       page: 0,
@@ -54,47 +54,47 @@ handleSubmit = (data) => {
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
-      RemoveOpen: true,
+      removeOne: true,
       deleteData: element,
     });
   };
 
   handleRemoveClose = () => {
     this.setState({
-      RemoveOpen: false,
+      removeOne: false,
     });
   };
 
   handleRemove = () => {
     const { deleteData } = this.state;
     this.setState({
-      RemoveOpen: false,
+      removeOne: false,
     });
   };
 
   handleEditDialogOpen = (element) => (event) => {
     this.setState({
-      EditOpen: true,
+      editOpen: true,
       editData: element,
     });
   };
 
   handleEditClose = () => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
   };
 
   handleEdit = (name, email) => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
     console.log('Edited Item ', { name, email });
   };
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData,
+      open, order, orderBy, page, rowsPerPage, editOpen, removeOne, editData,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -113,14 +113,14 @@ handleSubmit = (data) => {
           &nbsp;
           &nbsp;
           <EditDialog
-            Editopen={EditOpen}
+            editOpen={editOpen}
             handleEditClose={this.handleEditClose}
             handleEdit={this.handleEdit}
             data={editData}
           />
           <br />
           <DeleteDialog
-            openRemove={RemoveOpen}
+            openRemove={removeOne}
             onClose={this.handleRemoveClose}
             remove={this.handleRemove}
           />
@@ -172,7 +172,7 @@ handleSubmit = (data) => {
     );
   }
 }
-TraineeList.propTypes = {
+traineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(TraineeList);
+export default withStyles(useStyles)(traineeList);
