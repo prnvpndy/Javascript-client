@@ -9,6 +9,7 @@ import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { trainees } from './data/trainee';
 import { useStyles } from './traineeStyle';
+import callApi from '../../libs/utils/api';
 
 class TraineeList extends React.Component {
   constructor(props) {
@@ -28,6 +29,14 @@ class TraineeList extends React.Component {
 
   handleClick = (open) => {
     this.setState({ open });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      rowsPerPage: event.target.value,
+      page: 0,
+
+    });
   };
 
   handleSubmit = (data) => {
@@ -75,11 +84,9 @@ class TraineeList extends React.Component {
     this.setState({
       RemoveOpen: false,
     });
-    // eslint-disable-next-line no-console
     console.log('Deleted Item ', deleteData);
   };
 
-  // eslint-disable-next-line no-unused-vars
   handleEditDialogOpen = (element) => (event) => {
     this.setState({
       EditOpen: true,
@@ -97,9 +104,30 @@ class TraineeList extends React.Component {
     this.setState({
       EditOpen: false,
     });
-    // eslint-disable-next-line no-console
     console.log('Edited Item ', { name, email });
   };
+
+  componentDidMount = () => {
+    this.setState({ loading: true });
+    const value = this.context;
+    console.log('val :', value);
+    // eslint-disable-next-line consistent-return
+    callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
+      if (response.record === undefined) {
+        this.setState({
+          loading: false,
+        }, () => {
+        });
+      } else {
+        console.log('res inside traineelist :', response);
+        const { record } = response;
+        console.log('records aa :', record);
+        this.setState({ dataObj: record, loading: false, Count: 100 });
+        return response;
+      }
+    });
+  }
+
 
   render() {
     const {

@@ -1,31 +1,28 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Button, Dialog, DialogTitle, DialogContent, DialogContentText,
+  Button, Dialog, DialogTitle, DialogContent, DialogContentText, CircularProgress,
 } from '@material-ui/core';
-import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import Handler from './Handler';
+import callApi from '../../../../libs/utils/api';
 import { MyContext } from '../../../../context';
 import passwordStyle from './style';
-
-const constant = {
-  Name: Person,
-  // eslint-disable-next-line object-shorthand
-  Email: Email,
-  Password: VisibilityOff,
-  'Confirm Password': VisibilityOff,
-};
+import constant from './constant';
 
 class AddDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Name: '',
-      Email: '',
-      Password: '',
-      ConfirmPassword: '',
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      loading: false,
+      hasError: false,
+      message: '',
       touched: {
         name: false,
         email: false,
@@ -38,6 +35,34 @@ class AddDialog extends React.Component {
   handleChange = (key) => ({ target: { value } }) => {
     this.setState({ [key]: value });
   };
+
+  onClickHandler = async (data, openSnackBar) => {
+    this.setState({
+      loading: true,
+      hasError: true,
+    });
+    const response = await callApi(data, 'post', '/trainee');
+    console.log('data :', data);
+    this.setState({ loading: false });
+    console.log('res :', response);
+    if (response.status === 'OK') {
+      this.setState({
+        hasError: false,
+        message: 'This is a success message',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'success');
+      });
+    } else {
+      this.setState({
+        hasError: false,
+        message: 'error in submitting',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
+  }
 
     hasErrors = () => {
       try {
@@ -72,17 +97,29 @@ class AddDialog extends React.Component {
     }
 
     passwordType = (key) => {
-      if (key === 'Password' || key === 'Confirm Password') {
+      if (key === 'password' || key === 'Confirm Password') {
         return 'password';
       }
       return '';
     }
 
+    formReset = () => {
+      this.setState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        touched: {},
+      });
+    }
+
     render() {
       const {
-        open, onClose, onSubmit, classes,
+        open, onClose, classes,
       } = this.props;
-      const { name, email, password } = this.state;
+      const {
+        name, email, password, loading,
+      } = this.state;
       const ans = [];
       Object.keys(constant).forEach((key) => {
         ans.push(<Handler
@@ -132,11 +169,17 @@ class AddDialog extends React.Component {
                       color="primary"
                       disabled={this.hasErrors()}
                       onClick={() => {
-                        onSubmit()({ name, email, password });
-                        openSnackBar('This is a successfully added trainee message ! ', 'success');
+                        this.onClickHandler({
+                          name, email, password,
+                        }, openSnackBar);
+                        this.formReset();
                       }}
                     >
-                      SUBMIT
+                      {loading && (
+                        <CircularProgress size={15} />
+                      )}
+                      {loading && <span>Submitting</span>}
+                      {!loading && <span>Submit</span>}
                     </Button>
                   )}
                 </MyContext.Consumer>
@@ -151,6 +194,6 @@ export default withStyles(passwordStyle)(AddDialog);
 AddDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  // onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

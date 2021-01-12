@@ -5,6 +5,7 @@ import {
   Table, TableCell, TableContainer, TableHead, TableRow, Paper, withStyles, TableBody,
   TableSortLabel, TablePagination, IconButton,
 } from '@material-ui/core';
+import { hoc } from '../HOC/index';
 import useStyles from './style';
 
 function TableComponent(props) {
@@ -88,4 +89,4 @@ TableComponent.defaultProps = {
   orderBy: '',
   onSort: () => {},
 };
-export default withStyles(useStyles)(TableComponent);
+export default withStyles(useStyles)(hoc(TableComponent));
