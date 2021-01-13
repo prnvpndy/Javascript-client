@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react';
@@ -111,7 +112,6 @@ class TraineeList extends React.Component {
     this.setState({ loading: true });
     const value = this.context;
     console.log('val :', value);
-    // eslint-disable-next-line consistent-return
     callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
       if (response.record === undefined) {
         this.setState({
@@ -128,10 +128,10 @@ class TraineeList extends React.Component {
     });
   }
 
-
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData, deleteData,
+      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData, deleteData, loading,
+      dataObj, Count,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -165,8 +165,9 @@ class TraineeList extends React.Component {
           <br />
           <br />
           <TableComponent
+            loader={loading}
             id="id"
-            data={trainees}
+            data={dataObj}
             column={
               [
                 {
@@ -201,7 +202,7 @@ class TraineeList extends React.Component {
             orderBy={orderBy}
             order={order}
             onSelect={this.handleSelect}
-            count={100}
+            count={Count}
             page={page}
             onChangePage={this.handleChangePage}
             rowsPerPage={rowsPerPage}

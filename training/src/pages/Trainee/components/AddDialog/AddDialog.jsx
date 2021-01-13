@@ -44,8 +44,8 @@ class AddDialog extends React.Component {
     const response = await callApi(data, 'post', '/trainee');
     console.log('data :', data);
     this.setState({ loading: false });
-    console.log('res :', response);
-    if (response.status === 'OK') {
+    console.log('res :', response.data);
+    if (response.data !== undefined) {
       this.setState({
         hasError: false,
         message: 'This is a success message',

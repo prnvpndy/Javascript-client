@@ -49,11 +49,10 @@ class Login extends React.Component {
         hasError: true,
       });
       const response1 = await callApi(data, 'post', '/user/login');
-      localStorage.set('token', response1.data);
       this.setState({ loading: false });
-      // const response = localStorage.get('token');
       console.log('response :', response1.status);
       if (response1.status === 200) {
+        localStorage.set('token', response1.data);
         this.setState({
           redirect: true,
           hasError: false,

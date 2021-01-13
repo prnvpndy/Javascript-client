@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -22,11 +22,6 @@ const hoc = (WrappedComponent) => (props) => {
     );
   }
   return (<WrappedComponent loader={loader} count={count} {...rest} />);
-};
-
-hoc.propTypes = {
-  loader: PropTypes.objectOf(PropTypes.string).isRequired,
-  count: PropTypes.number(PropTypes.number).isRequired,
 };
 
 export default hoc;
