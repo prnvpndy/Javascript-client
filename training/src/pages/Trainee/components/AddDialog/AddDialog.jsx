@@ -118,7 +118,7 @@ class AddDialog extends React.Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={this.hasErrors()}
+                    disabled={hasErrors(this.state)}
                     onClick={() => {
                       onSubmit()({ name, email, password });
                       openSnackBar('This is a successfully added trainee message ! ', 'success');
