@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 import React from 'react';
@@ -113,7 +114,7 @@ class TraineeList extends React.Component {
     this.setState({ loading: true });
     const value = this.context;
     console.log('val :', value);
-    callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
+    callApi({ }, 'get', `/trainee?skip=${0}&limit=${100}`).then((response) => {
       console.log('res inside traineelist :', response.Trainees);
       if (response.Trainees === undefined) {
         this.setState({
