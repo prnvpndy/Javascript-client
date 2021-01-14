@@ -11,7 +11,7 @@ import useStyles from './style';
 function TableComponent(props) {
   const {
     classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
-    rowsPerPage, onChangePage,
+    rowsPerPage, onChangePage, onChangeRowsPerPage,
   } = props;
   console.log('Data', data.trainees);
   return (
@@ -37,14 +37,17 @@ function TableComponent(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((element) => (
+          {(rowsPerPage > 0
+            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : data
+          ).map((element) => (
             <TableRow
               key={element.id}
               className={classes.root}
               onMouseEnter={onSelect(element)}
             >
               {column.map(({ field, align, format }) => (
-                <TableCell align={align}>
+                <TableCell onClick={(event) => onSelect(event, element.name)} align={align} component="th" scope="row" order={order} orderBy={orderBy}>
                   {format !== undefined
                     ? format(element[field])
                     : element[field]}
@@ -66,6 +69,7 @@ function TableComponent(props) {
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </TableContainer>
   );
@@ -83,6 +87,7 @@ TableComponent.propTypes = {
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
+  onChangeRowsPerPage: PropTypes.func.isRequired,
 };
 TableComponent.defaultProps = {
   order: 'asc',

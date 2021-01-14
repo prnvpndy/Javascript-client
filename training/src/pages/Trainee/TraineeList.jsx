@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
@@ -8,7 +7,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
-import { trainees } from './data/trainee';
 import { useStyles } from './traineeStyle';
 import callApi from '../../libs/utils/api';
 
@@ -25,6 +23,9 @@ class TraineeList extends React.Component {
       deleteData: {},
       page: 0,
       rowsPerPage: 10,
+      loading: false,
+      Count: 0,
+      dataObj: [],
     };
   }
 
@@ -44,7 +45,6 @@ class TraineeList extends React.Component {
     this.setState({
       open: false,
     }, () => {
-      console.log('Data :', data);
     });
   }
 
@@ -62,6 +62,7 @@ class TraineeList extends React.Component {
   };
 
   handleChangePage = (event, newPage) => {
+    this.componentDidMount(newPage);
     this.setState({
       page: newPage,
     });
@@ -113,16 +114,16 @@ class TraineeList extends React.Component {
     const value = this.context;
     console.log('val :', value);
     callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
-      if (response.record === undefined) {
+      console.log('res inside traineelist :', response.Trainees);
+      if (response.Trainees === undefined) {
         this.setState({
           loading: false,
         }, () => {
         });
       } else {
-        console.log('res inside traineelist :', response);
-        const { record } = response;
-        console.log('records aa :', record);
-        this.setState({ dataObj: record, loading: false, Count: 100 });
+        const { Trainees } = response;
+        console.log('trainees', Trainees);
+        this.setState({ dataObj: Trainees, loading: false, Count: 100 });
         return response;
       }
     });
@@ -134,6 +135,8 @@ class TraineeList extends React.Component {
       dataObj, Count,
     } = this.state;
     const { classes } = this.props;
+    console.log('records aa :', dataObj);
+    console.log('state:', this.state);
     return (
       <>
         <div className={classes.root}>
@@ -206,6 +209,7 @@ class TraineeList extends React.Component {
             page={page}
             onChangePage={this.handleChangePage}
             rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </div>
       </>
