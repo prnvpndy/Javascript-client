@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,10 +8,9 @@ import useStyles from './style';
 
 function TableComponent(props) {
   const {
-    classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
+    classes, data, column, order, orderBy, onSort, count, page, actions,
     rowsPerPage, onChangePage,
   } = props;
-  console.log('Data', data.trainees);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
@@ -40,7 +38,6 @@ function TableComponent(props) {
             <TableRow
               key={element.id}
               className={classes.root}
-              onMouseEnter={onSelect(element)}
             >
               {column.map(({ field, align, format }) => (
                 <TableCell align={align}>
@@ -81,7 +78,6 @@ TableComponent.propTypes = {
   onChangePage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  onSelect: PropTypes.func.isRequired,
 };
 TableComponent.defaultProps = {
   order: 'asc',

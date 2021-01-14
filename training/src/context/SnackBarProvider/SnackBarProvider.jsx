@@ -1,9 +1,7 @@
+/* eslint-disable import/no-cycle */
 import React from 'react';
-import Snackbar from '@material-ui/core/Snackbar';
 import propTypes from 'prop-types';
-import MuiAlert from '@material-ui/lab/Alert';
-
-const MyContext = React.createContext();
+import { SnackBarContext, CustomizedSnackbars } from './CustomizedSnackbar';
 
 class SnackBarProvider extends React.Component {
   constructor(props) {
@@ -35,7 +33,7 @@ render() {
   const { message, status, open } = this.state;
   return (
     <>
-      <MyContext.Provider
+      <SnackBarContext.Provider
         value={{
           state: { message, status, open },
           openSnackBar: this.handleSnackBar,
@@ -44,42 +42,14 @@ render() {
       >
         {children}
         <CustomizedSnackbars />
-      </MyContext.Provider>
+      </SnackBarContext.Provider>
     </>
   );
 }
 }
-// eslint-disable-next-line react/jsx-props-no-spreading
-const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />;
-
-const CustomizedSnackbars = () => {
-  const value = React.useContext(MyContext);
-  const { closeSnackBar, state } = value;
-  const {
-    open, message, status,
-  } = state;
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    closeSnackBar();
-  };
-  return (
-    <div>
-      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-        {status === 'success' ? (
-          <Alert onClose={handleClose} severity="success">
-            {message}
-          </Alert>
-        )
-          : <Alert onClose={handleClose} severity="error">{message}</Alert>}
-      </Snackbar>
-    </div>
-  );
-};
 
 SnackBarProvider.propTypes = {
   children: propTypes.element.isRequired,
 };
 
-export { MyContext, SnackBarProvider };
+export { SnackBarProvider };

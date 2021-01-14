@@ -10,7 +10,7 @@ import {
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
 import localStorage from 'local-storage';
 import callApi from '../../libs/utils/api';
-import { MyContext } from '../../context/SnackBarProvider/index';
+import { SnackBarContext } from '../../context/SnackBarProvider';
 import Design from './style';
 import schema from './LoginSchema';
 
@@ -50,7 +50,6 @@ class Login extends React.Component {
       });
       const response1 = await callApi(data, 'post', '/user/login');
       this.setState({ loading: false });
-      // const response = localStorage.get('token');
       console.log('response :', response1.status);
       if (response1.status === 200) {
         localStorage.set('token', response1.data);
@@ -165,7 +164,7 @@ class Login extends React.Component {
                   </div>
                 &nbsp;
                   <div>
-                    <MyContext.Consumer>
+                    <SnackBarContext.Consumer>
                       {({ openSnackBar }) => (
                         <Button
                           fullWidth
@@ -185,7 +184,7 @@ class Login extends React.Component {
                           {this.renderRedirect()}
                         </Button>
                       )}
-                    </MyContext.Consumer>
+                    </SnackBarContext.Consumer>
                   </div>
                 </form>
               </CardContent>

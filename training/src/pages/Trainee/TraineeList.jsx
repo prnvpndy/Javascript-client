@@ -10,15 +10,15 @@ import { TableComponent } from '../../components';
 import { trainees } from './data/trainee';
 import { useStyles } from './traineeStyle';
 
-class TraineeList extends React.Component {
+class traineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       orderBy: '',
       order: 'asc',
-      EditOpen: false,
-      RemoveOpen: false,
+      editOpen: false,
+      removeOpen: false,
       editData: {},
       deleteData: {},
       page: 0,
@@ -26,25 +26,20 @@ class TraineeList extends React.Component {
     };
   }
 
-  handleClick = (open) => {
-    this.setState({ open });
-  };
+handleClick = (open) => {
+  this.setState({ open });
+}
 
-  handleSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-      console.log('Data :', data);
-    });
-  }
-
-  handleSelect = (event) => {
-    console.log(event);
-  };
+handleSubmit = (data) => {
+  this.setState({
+    open: false,
+  }, () => {
+    console.log(data);
+  });
+}
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
-    console.log(event);
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
@@ -59,51 +54,47 @@ class TraineeList extends React.Component {
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
-      RemoveOpen: true,
+      removeOpen: true,
       deleteData: element,
     });
   };
 
   handleRemoveClose = () => {
     this.setState({
-      RemoveOpen: false,
+      removeOpen: false,
     });
   };
 
   handleRemove = () => {
     const { deleteData } = this.state;
     this.setState({
-      RemoveOpen: false,
+      removeOpen: false,
     });
-    // eslint-disable-next-line no-console
-    console.log('Deleted Item ', deleteData);
   };
 
-  // eslint-disable-next-line no-unused-vars
   handleEditDialogOpen = (element) => (event) => {
     this.setState({
-      EditOpen: true,
+      editOpen: true,
       editData: element,
     });
   };
 
   handleEditClose = () => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
   };
 
   handleEdit = (name, email) => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
-    // eslint-disable-next-line no-console
     console.log('Edited Item ', { name, email });
   };
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData, deleteData,
+      open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -116,13 +107,13 @@ class TraineeList extends React.Component {
             <AddDialog
               open={open}
               onClose={() => this.handleClick(false)}
-              onSubmit={() => this.handleSubmit(false)}
+              onSubmit={() => this.handleSubmit}
             />
           </div>
           &nbsp;
           &nbsp;
           <EditDialog
-            Editopen={EditOpen}
+            editOpen={editOpen}
             handleEditClose={this.handleEditClose}
             handleEdit={this.handleEdit}
             data={editData}
@@ -132,7 +123,7 @@ class TraineeList extends React.Component {
             data={deleteData}
             onClose={this.handleRemoveClose}
             onSubmit={this.handleRemove}
-            open={RemoveOpen}
+            open={removeOpen}
           />
           <br />
           <br />
@@ -172,7 +163,6 @@ class TraineeList extends React.Component {
             onSort={this.handleSort}
             orderBy={orderBy}
             order={order}
-            onSelect={this.handleSelect}
             count={100}
             page={page}
             onChangePage={this.handleChangePage}
@@ -183,7 +173,7 @@ class TraineeList extends React.Component {
     );
   }
 }
-TraineeList.propTypes = {
+traineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(TraineeList);
+export default withStyles(useStyles)(traineeList);
