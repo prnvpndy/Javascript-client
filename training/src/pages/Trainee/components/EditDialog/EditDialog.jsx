@@ -14,6 +14,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
+import { SnackBarContext } from '../../../../context';
 import useStyles from './style';
 import schema from './EditDialogSchema';
 
@@ -151,20 +152,27 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            <Button
-              onClick={() => handleEdit(name, email)}
-              className={
-                (name === data.name && email === data.email) || this.hasErrors()
-                  ? classes.button_error
-                  : classes.button_color
-              }
-              color="primary"
-              disabled={
-                !!((name === data.name && email === data.email) || this.hasErrors())
-              }
-            >
-              Submit
-            </Button>
+            <SnackBarContext.Consumer>
+              {({ openSnackBar }) => (
+                <Button
+                  onClick={() => {
+                    handleEdit(name, email);
+                    openSnackBar('This is a successfully updated message ! ', 'success');
+                  }}
+                  className={
+                    (name === data.name && email === data.email) || this.hasErrors()
+                      ? classes.button_error
+                      : classes.button_color
+                  }
+                  color="primary"
+                  disabled={
+                    !!((name === data.name && email === data.email) || this.hasErrors())
+                  }
+                >
+                  Submit
+                </Button>
+              )}
+            </SnackBarContext.Consumer>
           </DialogActions>
         </Dialog>
       </div>

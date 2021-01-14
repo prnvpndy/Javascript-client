@@ -6,8 +6,8 @@ import { Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
-import { TableComponent } from '../../components/index';
-import trainees from './data/trainee';
+import { TableComponent } from '../../components';
+import { trainees } from './data/trainee';
 import { useStyles } from './traineeStyle';
 
 class traineeList extends React.Component {
@@ -18,7 +18,7 @@ class traineeList extends React.Component {
       orderBy: '',
       order: 'asc',
       editOpen: false,
-      removeOne: false,
+      removeOpen: false,
       editData: {},
       deleteData: {},
       page: 0,
@@ -54,21 +54,21 @@ handleSubmit = (data) => {
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
-      removeOne: true,
+      removeOpen: true,
       deleteData: element,
     });
   };
 
   handleRemoveClose = () => {
     this.setState({
-      removeOne: false,
+      removeOpen: false,
     });
   };
 
   handleRemove = () => {
     const { deleteData } = this.state;
     this.setState({
-      removeOne: false,
+      removeOpen: false,
     });
   };
 
@@ -94,7 +94,7 @@ handleSubmit = (data) => {
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, editOpen, removeOne, editData,
+      open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -120,9 +120,10 @@ handleSubmit = (data) => {
           />
           <br />
           <DeleteDialog
-            openRemove={removeOne}
+            data={deleteData}
             onClose={this.handleRemoveClose}
-            remove={this.handleRemove}
+            onSubmit={this.handleRemove}
+            open={removeOpen}
           />
           <br />
           <br />
