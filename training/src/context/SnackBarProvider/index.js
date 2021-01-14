@@ -1,4 +1,4 @@
 import { SnackBarProvider } from './SnackBarProvider';
-import { snackBarContext } from './CustomizedSnackbar';
+import { SnackBarContext } from './CustomizedSnackbar';
 
-export { SnackBarProvider, snackBarContext };
+export { SnackBarProvider, SnackBarContext };

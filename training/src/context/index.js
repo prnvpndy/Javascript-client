@@ -1,3 +1,3 @@
-import { snackBarContext, SnackBarProvider } from './SnackBarProvider/index';
+import { SnackBarContext, SnackBarProvider } from './SnackBarProvider/index';
 
-export { snackBarContext, SnackBarProvider };
+export { SnackBarContext, SnackBarProvider };

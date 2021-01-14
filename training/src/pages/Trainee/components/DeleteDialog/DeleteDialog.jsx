@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import * as moment from 'moment';
-import { snackBarContext } from '../../../../context/index';
+import { SnackBarContext } from '../../../../context/index';
 
 class DeleteDialog extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ render() {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <snackBarContext.Consumer>
+          <SnackBarContext.Consumer>
             {({ openSnackBar }) => (
               <Button
                 color="primary"
@@ -76,7 +76,7 @@ render() {
                 Delete
               </Button>
             )}
-          </snackBarContext.Consumer>
+          </SnackBarContext.Consumer>
         </DialogActions>
       </DialogContentText>
     </Dialog>

@@ -14,7 +14,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
-import { snackBarContext } from '../../../../context';
+import { SnackBarContext } from '../../../../context';
 import useStyles from './style';
 import schema from './EditDialogSchema';
 
@@ -152,7 +152,7 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            <snackBarContext.Consumer>
+            <SnackBarContext.Consumer>
               {({ openSnackBar }) => (
                 <Button
                   onClick={() => {
@@ -172,7 +172,7 @@ class EditDialog extends React.Component {
                   Submit
                 </Button>
               )}
-            </snackBarContext.Consumer>
+            </SnackBarContext.Consumer>
           </DialogActions>
         </Dialog>
       </div>
