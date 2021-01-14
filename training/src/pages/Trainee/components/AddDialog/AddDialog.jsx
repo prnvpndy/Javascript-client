@@ -9,7 +9,7 @@ import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import Handler from './Handler';
-import { MyContext } from '../../../../context';
+import { snackBarContext } from '../../../../context';
 import passwordStyle from './style';
 import {
   hasErrors, passwordType,
@@ -113,7 +113,7 @@ class AddDialog extends React.Component {
           &nbsp;
             <div align="right">
               <Button onClick={onClose} color="primary">CANCEL</Button>
-              <MyContext.Consumer>
+              <snackBarContext.Consumer>
                 {({ openSnackBar }) => (
                   <Button
                     variant="contained"
@@ -127,7 +127,7 @@ class AddDialog extends React.Component {
                     SUBMIT
                   </Button>
                 )}
-              </MyContext.Consumer>
+              </snackBarContext.Consumer>
             </div>
           </DialogContent>
         </Dialog>

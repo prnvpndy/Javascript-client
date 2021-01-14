@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import propTypes from 'prop-types';
-import { MyContext, CustomizedSnackbars } from './CustomizedSnackbar';
+import { snackBarContext, CustomizedSnackbars } from './CustomizedSnackbar';
 
 class SnackBarProvider extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ render() {
   const { message, status, open } = this.state;
   return (
     <>
-      <MyContext.Provider
+      <snackBarContext.Provider
         value={{
           state: { message, status, open },
           openSnackBar: this.handleSnackBar,
@@ -42,7 +42,7 @@ render() {
       >
         {children}
         <CustomizedSnackbars />
-      </MyContext.Provider>
+      </snackBarContext.Provider>
     </>
   );
 }

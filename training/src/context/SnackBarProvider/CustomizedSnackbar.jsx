@@ -5,12 +5,12 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-const MyContext = React.createContext();
+const snackBarContext = React.createContext();
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props} />;
 
 const CustomizedSnackbars = () => {
-  const value = React.useContext(MyContext);
+  const value = React.useContext(snackBarContext);
   const { closeSnackBar, state } = value;
   const {
     open, message, status,
@@ -34,4 +34,4 @@ const CustomizedSnackbars = () => {
     </div>
   );
 };
-export { MyContext, CustomizedSnackbars };
+export { snackBarContext, CustomizedSnackbars };
