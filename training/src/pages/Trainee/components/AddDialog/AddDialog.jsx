@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import Handler from './Handler';
 import callApi from '../../../../libs/utils/api';
-import { MyContext } from '../../../../context';
+import { SnackBarContext } from '../../../../context';
 import passwordStyle from './style';
 import constant from './constant';
 
@@ -162,7 +162,7 @@ class AddDialog extends React.Component {
           &nbsp;
               <div align="right">
                 <Button onClick={onClose} color="primary">CANCEL</Button>
-                <MyContext.Consumer>
+                <SnackBarContext.Consumer>
                   {({ openSnackBar }) => (
                     <Button
                       variant="contained"
@@ -182,7 +182,7 @@ class AddDialog extends React.Component {
                       {!loading && <span>Submit</span>}
                     </Button>
                   )}
-                </MyContext.Consumer>
+                </SnackBarContext.Consumer>
               </div>
             </DialogContent>
           </Dialog>

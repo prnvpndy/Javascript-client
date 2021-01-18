@@ -9,6 +9,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(matchProps) => {
+      console.log('abc', localStorage.getItem('token'));
       if ((localStorage.getItem('token'))) {
         return (
           <PrivateLayout>
