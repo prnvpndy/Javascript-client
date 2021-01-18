@@ -1,18 +1,28 @@
+/* eslint-disable consistent-return */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import {
   TextField, CssBaseline, Card, Typography, Avatar,
-  CardContent, withStyles, InputAdornment, Button,
+  CardContent, withStyles, InputAdornment, Button, CircularProgress,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
+import localStorage from 'local-storage';
+import callApi from '../../libs/utils/api';
+import { SnackBarContext } from '../../context/SnackBarProvider';
 import Design from './style';
+import schema from './LoginSchema';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Email: '',
-      Password: '',
+      email: '',
+      password: '',
+      loading: false,
+      redirect: false,
+      hasError: true,
+      message: '',
       touched: {
         email: false,
         password: false,
@@ -20,26 +30,59 @@ class Login extends React.Component {
     };
   }
 
+    renderRedirect = () => {
+      const { redirect } = this.state;
+      if (redirect) {
+        return <Redirect to="/trainee" />;
+      }
+    }
+
     handleChange = (key) => ({ target: { value } }) => {
       this.setState({ [key]: value });
     };
 
-    hasErrors = () => {
-      try {
-        this.schema.validateSync(this.state);
-      } catch (err) {
-        return true;
+    onClickHandler = async (data, openSnackBar) => {
+      this.setState({
+        loading: true,
+        hasError: true,
+      });
+      const response = await callApi(data, 'post', '/user/login');
+      this.setState({ loading: false });
+      if (response.status === 200) {
+        localStorage.set('token', response.data);
+        this.setState({
+          redirect: true,
+          hasError: false,
+          message: 'Successfully Login',
+        }, () => {
+          const { message } = this.state;
+          openSnackBar(message, 'success');
+        });
+      } else {
+        this.setState({
+          message: 'Login Failed, Record Not Found',
+        }, () => {
+          const { message } = this.state;
+          openSnackBar(message, 'error');
+        });
       }
-      return false;
     }
 
-    // eslint-disable-next-line consistent-return
+  hasErrors = () => {
+    try {
+      schema.validateSync(this.state);
+    } catch (err) {
+      return true;
+    }
+    return false;
+  }
+
     getError = (field) => {
       const { touched } = this.state;
       if (touched[field] && this.hasErrors()) {
         try {
-          this.schema.validateSyncAt(field, this.state);
-          return '';
+          schema.validateSyncAt(field, this.state);
+          return false;
         } catch (err) {
           return err.message;
         }
@@ -58,6 +101,10 @@ class Login extends React.Component {
 
     render() {
       const { classes } = this.props;
+      const {
+        email, password, loading,
+      } = this.state;
+      this.hasErrors();
       return (
         <>
           <div className={classes.main}>
@@ -75,7 +122,7 @@ class Login extends React.Component {
                       fullWidth
                       id="outlined-required"
                       label="Email Address"
-                      defaultValue=" "
+                      defaultValue=""
                       variant="outlined"
                       helperText={this.getError('email')}
                       error={!!this.getError('email')}
@@ -98,7 +145,6 @@ class Login extends React.Component {
                       fullWidth
                       id="outlined-required"
                       label="Password"
-                      defaultValue=" "
                       variant="outlined"
                       helperText={this.getError('password')}
                       error={!!this.getError('password')}
@@ -115,7 +161,27 @@ class Login extends React.Component {
                   </div>
                 &nbsp;
                   <div>
-                    <Button variant="contained" color="primary" disabled={this.hasErrors()} fullWidth>SIGN IN</Button>
+                    <SnackBarContext.Consumer>
+                      {({ openSnackBar }) => (
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          disabled={this.hasErrors()}
+                          onClick={() => {
+                            this.onClickHandler({ email, password }, openSnackBar);
+                          }}
+                        >
+                          {loading && (
+                            <CircularProgress />
+                          )}
+                          {loading && <span>Signing in</span>}
+                          {!loading && <span>Sign in</span>}
+                          {this.renderRedirect()}
+                        </Button>
+                      )}
+                    </SnackBarContext.Consumer>
                   </div>
                 </form>
               </CardContent>
