@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -43,16 +42,14 @@ class Login extends React.Component {
     };
 
     onClickHandler = async (data, openSnackBar) => {
-      console.log('Data is :', data);
       this.setState({
         loading: true,
         hasError: true,
       });
-      const response1 = await callApi(data, 'post', '/user/login');
+      const response = await callApi(data, 'post', '/user/login');
       this.setState({ loading: false });
-      console.log('response :', response1.status);
-      if (response1.status === 200) {
-        localStorage.set('token', response1.data);
+      if (response.status === 200) {
+        localStorage.set('token', response.data);
         this.setState({
           redirect: true,
           hasError: false,
