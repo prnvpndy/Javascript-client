@@ -83,13 +83,10 @@ class EditDialog extends React.Component {
   };
 
   onClickHandler = async (Data, openSnackBar) => {
-    console.log('data inside edit :', Data);
-    // const { onSubmit } = this.props;
     this.setState({
       loading: true,
     });
     const response = await callApi(Data, 'put', '/trainee');
-    console.log('Response :', response);
     this.setState({ loading: false });
     if (response !== 'undefined') {
       this.setState({
@@ -116,7 +113,6 @@ class EditDialog extends React.Component {
       name, email, error, loading,
     } = this.state;
     const { originalId: id } = data;
-    console.log('id in edit: ', id);
     return (
       <div>
         <Dialog
