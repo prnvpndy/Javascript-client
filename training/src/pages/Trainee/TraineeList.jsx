@@ -11,15 +11,15 @@ import { TableComponent } from '../../components';
 import { useStyles } from './traineeStyle';
 import callApi from '../../libs/utils/api';
 
-class TraineeList extends React.Component {
+class traineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       open: false,
       orderBy: '',
       order: 'asc',
-      EditOpen: false,
-      RemoveOpen: false,
+      editOpen: false,
+      removeOpen: false,
       editData: {},
       deleteData: {},
       page: 0,
@@ -42,20 +42,15 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleSubmit = (data) => {
-    this.setState({
-      open: false,
-    }, () => {
-    });
-  }
-
-  handleSelect = (event) => {
-    console.log(event);
-  };
+handleSubmit = (data) => {
+  this.setState({
+    open: false,
+  }, () => {
+  });
+}
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
-    console.log(event);
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
@@ -63,7 +58,6 @@ class TraineeList extends React.Component {
   };
 
   handleChangePage = (event, newPage) => {
-    this.componentDidMount(newPage);
     this.setState({
       page: newPage,
     });
@@ -71,51 +65,47 @@ class TraineeList extends React.Component {
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
-      RemoveOpen: true,
+      removeOpen: true,
       deleteData: element,
     });
   };
 
   handleRemoveClose = () => {
     this.setState({
-      RemoveOpen: false,
+      removeOpen: false,
     });
   };
 
   handleRemove = () => {
     const { deleteData } = this.state;
     this.setState({
-      RemoveOpen: false,
+      removeOpen: false,
     });
-    console.log('Deleted Item ', deleteData);
   };
 
   handleEditDialogOpen = (element) => (event) => {
     this.setState({
-      EditOpen: true,
+      editOpen: true,
       editData: element,
     });
   };
 
   handleEditClose = () => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
   };
 
   handleEdit = (name, email) => {
     this.setState({
-      EditOpen: false,
+      editOpen: false,
     });
-    console.log('Edited Item ', { name, email });
   };
 
   componentDidMount = () => {
     this.setState({ loading: true });
     const value = this.context;
-    console.log('val :', value);
-    callApi({ }, 'get', `/trainee?skip=${0}&limit=${100}`).then((response) => {
-      console.log('res inside traineelist :', response.Trainees);
+    callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
       if (response.Trainees === undefined) {
         this.setState({
           loading: false,
@@ -123,7 +113,6 @@ class TraineeList extends React.Component {
         });
       } else {
         const { Trainees } = response;
-        console.log('trainees', Trainees);
         this.setState({ dataObj: Trainees, loading: false, Count: 100 });
         return response;
       }
@@ -132,12 +121,10 @@ class TraineeList extends React.Component {
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData, deleteData, loading,
+      open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData, loading,
       dataObj, Count,
     } = this.state;
     const { classes } = this.props;
-    console.log('records aa :', dataObj);
-    console.log('state:', this.state);
     return (
       <>
         <div className={classes.root}>
@@ -148,13 +135,13 @@ class TraineeList extends React.Component {
             <AddDialog
               open={open}
               onClose={() => this.handleClick(false)}
-              onSubmit={() => this.handleSubmit(false)}
+              onSubmit={() => this.handleSubmit}
             />
           </div>
           &nbsp;
           &nbsp;
           <EditDialog
-            Editopen={EditOpen}
+            editOpen={editOpen}
             handleEditClose={this.handleEditClose}
             handleEdit={this.handleEdit}
             data={editData}
@@ -164,7 +151,7 @@ class TraineeList extends React.Component {
             data={deleteData}
             onClose={this.handleRemoveClose}
             onSubmit={this.handleRemove}
-            open={RemoveOpen}
+            open={removeOpen}
           />
           <br />
           <br />
@@ -217,7 +204,7 @@ class TraineeList extends React.Component {
     );
   }
 }
-TraineeList.propTypes = {
+traineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(TraineeList);
+export default withStyles(useStyles)(traineeList);

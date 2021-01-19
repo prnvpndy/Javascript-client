@@ -16,7 +16,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
-import { MyContext } from '../../../../context';
+import { SnackBarContext } from '../../../../context';
 import useStyles from './style';
 import schema from './EditDialogSchema';
 import callApi from '../../../../libs/utils/api';
@@ -111,7 +111,7 @@ class EditDialog extends React.Component {
 
   render() {
     const {
-      Editopen, handleEditClose, handleEdit, data, classes,
+      editOpen, handleEditClose, handleEdit, data, classes,
     } = this.props;
     const {
       name, email, error, loading,
@@ -121,7 +121,7 @@ class EditDialog extends React.Component {
     return (
       <div>
         <Dialog
-          open={Editopen}
+          open={editOpen}
           onClose={handleEditClose}
           onMouseEnter={this.handleSet}
           variant="outlined"
@@ -185,7 +185,7 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            <MyContext.Consumer>
+            <SnackBarContext.Consumer>
               {({ openSnackBar }) => (
                 <Button
                   onClick={() => {
@@ -209,7 +209,7 @@ class EditDialog extends React.Component {
                   {!loading && <span>Submit</span>}
                 </Button>
               )}
-            </MyContext.Consumer>
+            </SnackBarContext.Consumer>
           </DialogActions>
         </Dialog>
       </div>
@@ -217,7 +217,7 @@ class EditDialog extends React.Component {
   }
 }
 EditDialog.propTypes = {
-  Editopen: PropTypes.bool.isRequired,
+  editOpen: PropTypes.bool.isRequired,
   handleEditClose: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,

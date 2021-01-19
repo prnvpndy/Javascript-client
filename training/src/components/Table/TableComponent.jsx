@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -13,7 +12,6 @@ function TableComponent(props) {
     classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
     rowsPerPage, onChangePage, onChangeRowsPerPage,
   } = props;
-  console.log('Data', data.trainees);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
@@ -44,7 +42,6 @@ function TableComponent(props) {
             <TableRow
               key={element.id}
               className={classes.root}
-              onMouseEnter={onSelect(element)}
             >
               {column.map(({ field, align, format }) => (
                 <TableCell onClick={(event) => onSelect(event, element.name)} align={align} component="th" scope="row" order={order} orderBy={orderBy}>

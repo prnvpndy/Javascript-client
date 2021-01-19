@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -8,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import Handler from './Handler';
 import callApi from '../../../../libs/utils/api';
-import { MyContext } from '../../../../context';
+import { SnackBarContext } from '../../../../context';
 import passwordStyle from './style';
 import constant from './constant';
 
@@ -42,9 +41,7 @@ class AddDialog extends React.Component {
       hasError: true,
     });
     const response = await callApi(data, 'post', '/trainee');
-    console.log('data :', data);
     this.setState({ loading: false });
-    console.log('res :', response.data);
     if (response.data !== undefined) {
       this.setState({
         hasError: false,
@@ -162,7 +159,7 @@ class AddDialog extends React.Component {
           &nbsp;
               <div align="right">
                 <Button onClick={onClose} color="primary">CANCEL</Button>
-                <MyContext.Consumer>
+                <SnackBarContext.Consumer>
                   {({ openSnackBar }) => (
                     <Button
                       variant="contained"
@@ -182,7 +179,7 @@ class AddDialog extends React.Component {
                       {!loading && <span>Submit</span>}
                     </Button>
                   )}
-                </MyContext.Consumer>
+                </SnackBarContext.Consumer>
               </div>
             </DialogContent>
           </Dialog>

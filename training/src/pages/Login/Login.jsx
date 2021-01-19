@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -10,7 +9,7 @@ import {
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
 import localStorage from 'local-storage';
 import callApi from '../../libs/utils/api';
-import { MyContext } from '../../context/SnackBarProvider/index';
+import { SnackBarContext } from '../../context/SnackBarProvider';
 import Design from './style';
 import schema from './LoginSchema';
 
@@ -43,16 +42,14 @@ class Login extends React.Component {
     };
 
     onClickHandler = async (data, openSnackBar) => {
-      console.log('Data is :', data);
       this.setState({
         loading: true,
         hasError: true,
       });
-      const response1 = await callApi(data, 'post', '/user/login');
+      const response = await callApi(data, 'post', '/user/login');
       this.setState({ loading: false });
-      console.log('response :', response1.status);
-      if (response1.status === 200) {
-        localStorage.set('token', response1.data);
+      if (response.status === 200) {
+        localStorage.set('token', response.data);
         this.setState({
           redirect: true,
           hasError: false,
@@ -164,7 +161,7 @@ class Login extends React.Component {
                   </div>
                 &nbsp;
                   <div>
-                    <MyContext.Consumer>
+                    <SnackBarContext.Consumer>
                       {({ openSnackBar }) => (
                         <Button
                           fullWidth
@@ -184,7 +181,7 @@ class Login extends React.Component {
                           {this.renderRedirect()}
                         </Button>
                       )}
-                    </MyContext.Consumer>
+                    </SnackBarContext.Consumer>
                   </div>
                 </form>
               </CardContent>

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
@@ -7,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import { MyContext } from '../../../../context/index';
+import { SnackBarContext } from '../../../../context/index';
 import callApi from '../../../../libs/utils/api';
 
 class DeleteDialog extends Component {
@@ -75,7 +74,7 @@ render() {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <MyContext.Consumer>
+          <SnackBarContext.Consumer>
             {({ openSnackBar }) => (
               <Button
                 color="primary"
@@ -92,7 +91,7 @@ render() {
                 {!loading && <span>Delete</span>}
               </Button>
             )}
-          </MyContext.Consumer>
+          </SnackBarContext.Consumer>
         </DialogActions>
       </DialogContentText>
     </Dialog>
