@@ -1,5 +1,5 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
@@ -7,8 +7,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
-import { trainees } from './data/trainee';
 import { useStyles } from './traineeStyle';
+import callApi from '../../libs/utils/api';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -23,18 +23,28 @@ class traineeList extends React.Component {
       deleteData: {},
       page: 0,
       rowsPerPage: 10,
+      loading: false,
+      Count: 0,
+      dataObj: [],
     };
   }
 
-handleClick = (open) => {
-  this.setState({ open });
-}
+  handleClick = (open) => {
+    this.setState({ open });
+  };
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      rowsPerPage: event.target.value,
+      page: 0,
+
+    });
+  };
 
 handleSubmit = (data) => {
   this.setState({
     open: false,
   }, () => {
-    console.log(data);
   });
 }
 
@@ -89,12 +99,29 @@ handleSubmit = (data) => {
     this.setState({
       editOpen: false,
     });
-    console.log('Edited Item ', { name, email });
   };
+
+  componentDidMount = () => {
+    this.setState({ loading: true });
+    const value = this.context;
+    callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
+      if (response.Trainees === undefined) {
+        this.setState({
+          loading: false,
+        }, () => {
+        });
+      } else {
+        const { Trainees } = response;
+        this.setState({ dataObj: Trainees, loading: false, Count: 100 });
+        return response;
+      }
+    });
+  }
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData,
+      open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData, loading,
+      dataObj, Count,
     } = this.state;
     const { classes } = this.props;
     return (
@@ -128,8 +155,9 @@ handleSubmit = (data) => {
           <br />
           <br />
           <TableComponent
+            loader={loading}
             id="id"
-            data={trainees}
+            data={dataObj}
             column={
               [
                 {
@@ -163,10 +191,12 @@ handleSubmit = (data) => {
             onSort={this.handleSort}
             orderBy={orderBy}
             order={order}
-            count={100}
+            onSelect={this.handleSelect}
+            count={Count}
             page={page}
             onChangePage={this.handleChangePage}
             rowsPerPage={rowsPerPage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
         </div>
       </>
