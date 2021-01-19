@@ -41,13 +41,6 @@ class traineeList extends React.Component {
     });
   };
 
-  // handleSubmit = (data) => {
-  //   this.setState({
-  //     open: false,
-  //   }, () => {
-  //   });
-  // }
-
 handleSubmit = (data) => {
   this.setState({
     open: false,
@@ -64,7 +57,6 @@ handleSubmit = (data) => {
   };
 
   handleChangePage = (event, newPage) => {
-    this.componentDidMount(newPage);
     this.setState({
       page: newPage,
     });

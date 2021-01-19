@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -42,9 +41,7 @@ class AddDialog extends React.Component {
       hasError: true,
     });
     const response = await callApi(data, 'post', '/trainee');
-    console.log('data :', data);
     this.setState({ loading: false });
-    console.log('res :', response.data);
     if (response.data !== undefined) {
       this.setState({
         hasError: false,
