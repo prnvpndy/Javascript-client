@@ -1,16 +1,22 @@
 const Design = (theme) => ({
   icon: {
-    background: 'red',
-    marginLeft: theme.spacing(22),
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+
+  },
+  paper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   main: {
-    width: 400,
-    marginTop: theme.spacing(20),
-    marginLeft: theme.spacing(58),
+    marginTop: theme.spacing(15),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  input: {
+    paddingRight: 5,
   },
 });
 export default Design;

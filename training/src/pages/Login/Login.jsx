@@ -1,14 +1,15 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable consistent-return */
+import Container from '@material-ui/core/Container';
 import React from 'react';
+import EmailIcon from '@material-ui/icons/Email';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import {
-  TextField, CssBaseline, Card, Typography, Avatar,
-  CardContent, withStyles, InputAdornment, Button, CircularProgress,
+  TextField, CssBaseline, Typography, Avatar,
+  withStyles, Button, CircularProgress, Box,
 } from '@material-ui/core';
-import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
-import localStorage from 'local-storage';
-import callApi from '../../libs/utils/api';
+import { VisibilityOff, LockOutlined } from '@material-ui/icons';
 import { SnackBarContext } from '../../context/SnackBarProvider';
 import Design from './style';
 import schema from './LoginSchema';
@@ -42,14 +43,17 @@ class Login extends React.Component {
     };
 
     onClickHandler = async (data, openSnackBar) => {
+      const { loginUser } = this.props;
+      const { email, password } = data;
       this.setState({
         loading: true,
         hasError: true,
       });
-      const response = await callApi(data, 'post', '/user/login');
+      const responseLogin = await loginUser({ variables: { email, password } });
+      const response = JSON.parse(responseLogin.data.loginUser);
       this.setState({ loading: false });
       if (response.status === 200) {
-        localStorage.set('token', response.data);
+        localStorage.setItem('token', response.data);
         this.setState({
           redirect: true,
           hasError: false,
@@ -106,88 +110,78 @@ class Login extends React.Component {
       } = this.state;
       this.hasErrors();
       return (
-        <>
-          <div className={classes.main}>
-            <CssBaseline />
-            <Card open aria-labelledby="form-dialog-title">
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box mx="auto" bgcolor="background.paper" p={2} className={classes.main} boxShadow={3}>
+            <div className={classes.paper}>
               <Avatar className={classes.icon}>
                 <LockOutlined />
               </Avatar>
-              <Typography variant="h3" align="center">Login</Typography>
-              <CardContent>
-                <form>
-                  <div>
-                    <TextField
-                      required
+              <Typography component="h1" variant="h4">Login</Typography>
+
+              <form className={classes.form} noValidate>
+                <TextField
+                  required
+                  fullWidth
+                  id="outlined-full-width"
+                  label="Email Address"
+                  type="text"
+                  margin="normal"
+                  defaultValue=""
+                  helperText={this.getError('email')}
+                  error={!!this.getError('email')}
+                  onChange={this.handleChange('email')}
+                  onBlur={() => this.isTouched('email')}
+                  InputProps={{
+                    startAdornment: (
+                      <EmailIcon className={classes.input} />
+                    ),
+                  }}
+                  variant="outlined"
+                />
+                <TextField
+                  required
+                  type="password"
+                  fullWidth
+                  id="outlined-full-width"
+                  label="Password"
+                  variant="outlined"
+                  margin="normal"
+                  helperText={this.getError('password')}
+                  error={!!this.getError('password')}
+                  onChange={this.handleChange('password')}
+                  onBlur={() => this.isTouched('password')}
+                  InputProps={{
+                    startAdornment: (
+                      <VisibilityOff className={classes.input} />
+                    ),
+                  }}
+                />
+                <SnackBarContext.Consumer>
+                  {({ openSnackBar }) => (
+                    <Button
                       fullWidth
-                      id="outlined-required"
-                      label="Email Address"
-                      defaultValue=""
-                      variant="outlined"
-                      helperText={this.getError('email')}
-                      error={!!this.getError('email')}
-                      onChange={this.handleChange('email')}
-                      onBlur={() => this.isTouched('email')}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Email />
-                          </InputAdornment>
-                        ),
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      disabled={this.hasErrors()}
+                      onClick={() => {
+                        this.onClickHandler({ email, password }, openSnackBar);
                       }}
-                    />
-                  </div>
-                  <br />
-                  <div>
-                    <TextField
-                      required
-                      type="password"
-                      fullWidth
-                      id="outlined-required"
-                      label="Password"
-                      variant="outlined"
-                      helperText={this.getError('password')}
-                      error={!!this.getError('password')}
-                      onChange={this.handleChange('password')}
-                      onBlur={() => this.isTouched('password')}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <VisibilityOff />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </div>
-                &nbsp;
-                  <div>
-                    <SnackBarContext.Consumer>
-                      {({ openSnackBar }) => (
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          disabled={this.hasErrors()}
-                          onClick={() => {
-                            this.onClickHandler({ email, password }, openSnackBar);
-                          }}
-                        >
-                          {loading && (
-                            <CircularProgress />
-                          )}
-                          {loading && <span>Signing in</span>}
-                          {!loading && <span>Sign in</span>}
-                          {this.renderRedirect()}
-                        </Button>
+                    >
+                      {loading && (
+                        <CircularProgress />
                       )}
-                    </SnackBarContext.Consumer>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </>
+                      {loading && <span>Signing in</span>}
+                      {!loading && <span>Sign in</span>}
+                      {this.renderRedirect()}
+                    </Button>
+                  )}
+                </SnackBarContext.Consumer>
+              </form>
+            </div>
+          </Box>
+        </Container>
       );
     }
 }
