@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
+import { Mutation } from '@apollo/react-components';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { graphql } from '@apollo/react-hoc';
@@ -13,7 +13,8 @@ import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { useStyles } from './traineeStyle';
 import { GET_TRAINEE } from './Query';
-import callApi from '../../libs/utils/api';
+import { SnackBarContext } from '../../context/index';
+import { UPDATE_TRAINEE, CREATE_TRAINEE } from './Mutation';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class traineeList extends React.Component {
       editData: {},
       deleteData: {},
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 5,
       loading: false,
     };
   }
@@ -44,12 +45,30 @@ class traineeList extends React.Component {
     });
   };
 
-handleSubmit = (data) => {
-  this.setState({
-    open: false,
-  }, () => {
-  });
-}
+  // handleSubmit = (data) => {
+  //   this.setState({
+  //     open: false,
+  //   }, () => {
+  //   });
+  // }
+  onSubmitAdd = async (data, openSnackBar, createTrainee, refetch) => {
+    try {
+      const { name, email, password } = data;
+      await createTrainee({ variables: { name, email, password } });
+      refetch();
+      this.setState({
+        open: false,
+      }, () => {
+        openSnackBar('Trainee Created Successfully', 'success');
+      });
+    } catch (err) {
+      this.setState({
+        open: false,
+      }, () => {
+        openSnackBar('Error While Creating', 'error');
+      });
+    }
+  }
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
@@ -58,12 +77,6 @@ handleSubmit = (data) => {
       order: order === 'asc' ? 'desc' : 'asc',
     });
   };
-
-  // handleChangePage = (event, newPage) => {
-  //   this.setState({
-  //     page: newPage,
-  //   });
-  // };
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
@@ -104,30 +117,31 @@ handleSubmit = (data) => {
     });
   };
 
-  // componentDidMount = () => {
-  //   this.setState({ loading: true });
-  //   const value = this.context;
-  //   callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
-  //     if (response.Trainees === undefined) {
-  //       this.setState({
-  //         loading: false,
-  //       }, () => {
-  //       });
-  //     } else {
-  //       const { Trainees } = response;
-  //       this.setState({ dataObj: Trainees, loading: false, Count: 100 });
-  //       return response;
-  //     }
-  //   });
-  // }
+  onSubmitEdit = async (data, openSnackBar, updateTrainee, refetch) => {
+    try {
+      const { name, email, id } = data;
+      await updateTrainee({ variables: { name, email, id } });
+      refetch();
+      this.setState({
+        editOpen: false,
+      }, () => {
+        openSnackBar('Trainee Updated Successfully', 'success');
+      });
+    } catch (err) {
+      this.setState({
+        open: false,
+      }, () => {
+        openSnackBar('Error While Updating', 'error');
+      });
+    }
+  };
+
   handlePageChange = (refetch) => (event, newPage) => {
     const { rowsPerPage } = this.state;
-    console.log('skip:', newPage * (rowsPerPage.length));
-    console.log('limit:', rowsPerPage.length);
     this.setState({
       page: newPage,
     }, () => {
-      refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
+      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
     });
   }
 
@@ -143,83 +157,113 @@ handleSubmit = (data) => {
         // loading,
       },
     } = this.props;
-    console.log('recard is : ', count);
+    const variables = { skip: page * rowsPerPage.length, limit: rowsPerPage.length };
     return (
       <>
-        <div className={classes.root}>
-          <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
-              ADD TRAINEELIST
-            </Button>
-            <AddDialog
-              open={open}
-              onClose={() => this.handleClick(false)}
-              onSubmit={() => this.handleSubmit}
-              refetch={refetch}
-            />
-          </div>
+        <Mutation
+          mutation={CREATE_TRAINEE}
+          refetchQueries={[{ query: GET_TRAINEE, variables }]}
+        >
+          {(createTrainee, createrLoader = { loading }) => (
+            <Mutation
+              mutation={UPDATE_TRAINEE}
+              refetchQueries={[{ query: GET_TRAINEE, variables }]}
+            >
+              {(updateTrainee, updateLoader = { loading }) => (
+                <SnackBarContext.Consumer>
+                  {({ openSnackBar }) => (
+                    <>
+                      <div className={classes.root}>
+                        <div className={classes.dialog}>
+                          <Button variant="outlined" color="primary" onClick={() => this.handleClick(true)}>
+                            ADD TRAINEELIST
+                          </Button>
+                          <AddDialog
+                            open={open}
+                            onClose={() => this.handleClick(false)}
+                            onSubmit={
+                              (data) => this.onSubmitAdd(
+                                data, openSnackBar, createTrainee, refetch,
+                              )
+                            }
+                            loading={createrLoader}
+                          />
+                        </div>
           &nbsp;
           &nbsp;
-          <EditDialog
-            editOpen={editOpen}
-            handleEditClose={this.handleEditClose}
-            handleEdit={this.handleEdit}
-            data={editData}
-          />
-          <br />
-          <DeleteDialog
-            data={deleteData}
-            onClose={this.handleRemoveClose}
-            onSubmit={this.handleRemove}
-            open={removeOpen}
-          />
-          <br />
-          <br />
-          <TableComponent
-            loader={loading}
-            id="id"
-            data={Trainees}
-            column={
-              [
-                {
-                  field: 'name',
-                  label: 'Name',
-                },
-                {
-                  field: 'email',
-                  label: 'Email Address',
-                  format: (value) => value && value.toUpperCase(),
-                },
-                {
-                  field: 'createdAt',
-                  label: 'Date',
-                  align: 'right',
-                  format: this.getDateFormat,
-                },
-              ]
-            }
-            actions={[
-              {
-                icon: <EditIcon />,
-                handler: this.handleEditDialogOpen,
+                        <EditDialog
+                          editOpen={editOpen}
+                          handleEditClose={this.handleEditClose}
+                          handleEdit={
+                            (data) => this.onSubmitEdit(
+                              data, openSnackBar, updateTrainee, refetch,
+                            )
+                          }
+                          data={editData}
+                          loading={updateLoader}
+                        />
+                        <br />
+                        <DeleteDialog
+                          data={deleteData}
+                          onClose={this.handleRemoveClose}
+                          onSubmit={this.handleRemove}
+                          open={removeOpen}
+                          refetch={refetch}
+                        />
+                        <br />
+                        <br />
+                        <TableComponent
+                          loader={loading}
+                          id="id"
+                          data={Trainees}
+                          column={
+                            [
+                              {
+                                field: 'name',
+                                label: 'Name',
+                              },
+                              {
+                                field: 'email',
+                                label: 'Email Address',
+                                format: (value) => value && value.toUpperCase(),
+                              },
+                              {
+                                field: 'createdAt',
+                                label: 'Date',
+                                align: 'right',
+                                format: this.getDateFormat,
+                              },
+                            ]
+                          }
+                          actions={[
+                            {
+                              icon: <EditIcon />,
+                              handler: this.handleEditDialogOpen,
 
-              },
-              {
-                icon: <DeleteIcon />,
-                handler: this.handleRemoveDialogOpen,
-              },
-            ]}
-            onSort={this.handleSort}
-            orderBy={orderBy}
-            order={order}
-            onSelect={this.handleSelect}
-            count={count}
-            page={page}
-            onChangePage={this.handlePageChange(refetch)}
-            rowsPerPage={rowsPerPage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
-        </div>
+                            },
+                            {
+                              icon: <DeleteIcon />,
+                              handler: this.handleRemoveDialogOpen,
+                            },
+                          ]}
+                          onSort={this.handleSort}
+                          orderBy={orderBy}
+                          order={order}
+                          onSelect={this.handleSelect}
+                          count={count}
+                          page={page}
+                          onChangePage={this.handlePageChange(refetch)}
+                          rowsPerPage={rowsPerPage}
+                          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        />
+                      </div>
+                    </>
+                  )}
+                </SnackBarContext.Consumer>
+              )}
+            </Mutation>
+          )}
+        </Mutation>
       </>
     );
   }
@@ -231,6 +275,6 @@ traineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE, {
-    options: { variables: { skip: 0, limit: 100 } },
+    options: { variables: { skip: 0, limit: 20 } },
   }),
 )(traineeList);

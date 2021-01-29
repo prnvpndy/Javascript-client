@@ -15,10 +15,9 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
-import { SnackBarContext } from '../../../../context';
+// import { SnackBarContext } from '../../../../context';
 import useStyles from './style';
 import schema from './EditDialogSchema';
-import callApi from '../../../../libs/utils/api';
 
 class EditDialog extends React.Component {
   constructor(props) {
@@ -81,29 +80,6 @@ class EditDialog extends React.Component {
     iserror = iserror.filter((errorMessage) => errorMessage !== '');
     return !!iserror.length;
   };
-
-  onClickHandler = async (Data, openSnackBar) => {
-    this.setState({
-      loading: true,
-    });
-    const response = await callApi(Data, 'put', '/trainee');
-    this.setState({ loading: false });
-    if (response !== 'undefined') {
-      this.setState({
-        message: 'Trainee Updated Successfully',
-      }, () => {
-        const { message } = this.state;
-        openSnackBar(message, 'success');
-      });
-    } else {
-      this.setState({
-        message: 'Error while submitting',
-      }, () => {
-        const { message } = this.state;
-        openSnackBar(message, 'error');
-      });
-    }
-  }
 
   render() {
     const {
@@ -180,31 +156,30 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            <SnackBarContext.Consumer>
-              {({ openSnackBar }) => (
-                <Button
-                  onClick={() => {
-                    handleEdit(name, email);
-                    this.onClickHandler({ name, email, id }, openSnackBar);
-                  }}
-                  className={
-                    (name === data.name && email === data.email) || this.hasErrors()
-                      ? classes.button_error
-                      : classes.button_color
-                  }
-                  color="primary"
-                  disabled={
-                    !!((name === data.name && email === data.email) || this.hasErrors())
-                  }
-                >
-                  {loading && (
-                    <CircularProgress size={15} />
-                  )}
-                  {loading && <span>Submitting</span>}
-                  {!loading && <span>Submit</span>}
-                </Button>
+            {/* <SnackBarContext.Consumer>
+              {({ openSnackBar }) => ( */}
+            <Button
+              onClick={() => {
+                handleEdit({ name, email, id });
+              }}
+              className={
+                (name === data.name && email === data.email) || this.hasErrors()
+                  ? classes.button_error
+                  : classes.button_color
+              }
+              color="primary"
+              disabled={
+                !!((name === data.name && email === data.email) || this.hasErrors())
+              }
+            >
+              {loading && (
+                <CircularProgress size={15} />
               )}
-            </SnackBarContext.Consumer>
+              {loading && <span>Submitting</span>}
+              {!loading && <span>Submit</span>}
+            </Button>
+            {/* )}
+            </SnackBarContext.Consumer> */}
           </DialogActions>
         </Dialog>
       </div>
