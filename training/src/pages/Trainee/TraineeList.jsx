@@ -95,11 +95,11 @@ handleSubmit = (data) => {
   };
 
   handlePageChange = (refetch) => (event, newPage) => {
-    const { rowsPerPage } = this.state;
+    const { data: { variables } } = this.props;
     this.setState({
       page: newPage,
     }, () => {
-      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
+      refetch({ variables });
     });
   }
 
@@ -202,6 +202,6 @@ traineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE, {
-    options: { variables: { skip: 0, limit: 100 } },
+    options: { variables: { skip: 0, limit: 2 } },
   }),
 )(traineeList);
