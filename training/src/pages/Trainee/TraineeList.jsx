@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-console */
-/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,7 +10,6 @@ import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { useStyles } from './traineeStyle';
 import { GET_TRAINEE } from './Query';
-import callApi from '../../libs/utils/api';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -27,7 +23,7 @@ class traineeList extends React.Component {
       editData: {},
       deleteData: {},
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 5,
       loading: false,
     };
   }
@@ -58,12 +54,6 @@ handleSubmit = (data) => {
       order: order === 'asc' ? 'desc' : 'asc',
     });
   };
-
-  // handleChangePage = (event, newPage) => {
-  //   this.setState({
-  //     page: newPage,
-  //   });
-  // };
 
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
@@ -104,30 +94,12 @@ handleSubmit = (data) => {
     });
   };
 
-  // componentDidMount = () => {
-  //   this.setState({ loading: true });
-  //   const value = this.context;
-  //   callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
-  //     if (response.Trainees === undefined) {
-  //       this.setState({
-  //         loading: false,
-  //       }, () => {
-  //       });
-  //     } else {
-  //       const { Trainees } = response;
-  //       this.setState({ dataObj: Trainees, loading: false, Count: 100 });
-  //       return response;
-  //     }
-  //   });
-  // }
   handlePageChange = (refetch) => (event, newPage) => {
     const { rowsPerPage } = this.state;
-    console.log('skip:', newPage * (rowsPerPage.length));
-    console.log('limit:', rowsPerPage.length);
     this.setState({
       page: newPage,
     }, () => {
-      refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
+      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
     });
   }
 
@@ -143,7 +115,6 @@ handleSubmit = (data) => {
         // loading,
       },
     } = this.props;
-    console.log('recard is : ', count);
     return (
       <>
         <div className={classes.root}>
