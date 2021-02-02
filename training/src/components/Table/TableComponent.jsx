@@ -8,12 +8,10 @@ import { hoc } from '../HOC/index';
 import useStyles from './style';
 
 function TableComponent(props) {
-  console.log('Inside table');
   const {
     classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
     rowsPerPage, onChangePage, onChangeRowsPerPage,
   } = props;
-  console.log('data inside table component :', data);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
