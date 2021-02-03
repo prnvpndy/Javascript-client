@@ -40,9 +40,12 @@ class AddDialog extends React.Component {
       loading: true,
       hasError: true,
     });
+    // eslint-disable-next-line react/prop-types
+    const { refetch } = this.props;
     const response = await callApi(data, 'post', '/trainee');
     this.setState({ loading: false });
     if (response.data !== undefined) {
+      refetch();
       this.setState({
         hasError: false,
         message: 'This is a success message',

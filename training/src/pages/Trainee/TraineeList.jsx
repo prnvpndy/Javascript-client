@@ -1,14 +1,15 @@
-/* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { graphql } from '@apollo/react-hoc';
+import Compose from 'lodash.flowright';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { useStyles } from './traineeStyle';
-import callApi from '../../libs/utils/api';
+import { GET_TRAINEE } from './Query';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -22,10 +23,8 @@ class traineeList extends React.Component {
       editData: {},
       deleteData: {},
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 5,
       loading: false,
-      Count: 0,
-      dataObj: [],
     };
   }
 
@@ -53,12 +52,6 @@ handleSubmit = (data) => {
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
-    });
-  };
-
-  handleChangePage = (event, newPage) => {
-    this.setState({
-      page: newPage,
     });
   };
 
@@ -101,29 +94,27 @@ handleSubmit = (data) => {
     });
   };
 
-  componentDidMount = () => {
-    this.setState({ loading: true });
-    const value = this.context;
-    callApi({ }, 'get', `/trainee?skip=${0}&limit=${20}`).then((response) => {
-      if (response.Trainees === undefined) {
-        this.setState({
-          loading: false,
-        }, () => {
-        });
-      } else {
-        const { Trainees } = response;
-        this.setState({ dataObj: Trainees, loading: false, Count: 100 });
-        return response;
-      }
+  handlePageChange = (refetch) => (event, newPage) => {
+    const { data: { variables } } = this.props;
+    this.setState({
+      page: newPage,
+    }, () => {
+      refetch({ variables });
     });
   }
 
   render() {
     const {
       open, order, orderBy, page, rowsPerPage, editOpen, removeOpen, editData, deleteData, loading,
-      dataObj, Count,
     } = this.state;
     const { classes } = this.props;
+    const {
+      data: {
+        getAllTrainees: { Trainees = [], count = 0 } = {},
+        refetch,
+        // loading,
+      },
+    } = this.props;
     return (
       <>
         <div className={classes.root}>
@@ -135,6 +126,7 @@ handleSubmit = (data) => {
               open={open}
               onClose={() => this.handleClick(false)}
               onSubmit={() => this.handleSubmit}
+              refetch={refetch}
             />
           </div>
           &nbsp;
@@ -157,7 +149,7 @@ handleSubmit = (data) => {
           <TableComponent
             loader={loading}
             id="id"
-            data={dataObj}
+            data={Trainees}
             column={
               [
                 {
@@ -192,9 +184,9 @@ handleSubmit = (data) => {
             orderBy={orderBy}
             order={order}
             onSelect={this.handleSelect}
-            count={Count}
+            count={count}
             page={page}
-            onChangePage={this.handleChangePage}
+            onChangePage={this.handlePageChange(refetch)}
             rowsPerPage={rowsPerPage}
             onChangeRowsPerPage={this.handleChangeRowsPerPage}
           />
@@ -205,5 +197,11 @@ handleSubmit = (data) => {
 }
 traineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  data: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(traineeList);
+export default Compose(
+  withStyles(useStyles),
+  graphql(GET_TRAINEE, {
+    options: { variables: { skip: 0, limit: 2 } },
+  }),
+)(traineeList);
