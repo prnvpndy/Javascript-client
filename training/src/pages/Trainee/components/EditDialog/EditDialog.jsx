@@ -15,7 +15,6 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
-// import { SnackBarContext } from '../../../../context';
 import useStyles from './style';
 import schema from './EditDialogSchema';
 
@@ -156,8 +155,7 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            {/* <SnackBarContext.Consumer>
-              {({ openSnackBar }) => ( */}
+
             <Button
               onClick={() => {
                 handleEdit({ name, email, id });
@@ -178,8 +176,7 @@ class EditDialog extends React.Component {
               {loading && <span>Submitting</span>}
               {!loading && <span>Submit</span>}
             </Button>
-            {/* )}
-            </SnackBarContext.Consumer> */}
+
           </DialogActions>
         </Dialog>
       </div>

@@ -45,12 +45,6 @@ class traineeList extends React.Component {
     });
   };
 
-  // handleSubmit = (data) => {
-  //   this.setState({
-  //     open: false,
-  //   }, () => {
-  //   });
-  // }
   onSubmitAdd = async (data, openSnackBar, createTrainee, refetch) => {
     try {
       const { name, email, password } = data;
@@ -105,6 +99,11 @@ class traineeList extends React.Component {
     });
   };
 
+  handleSelect = (event) => {
+    // eslint-disable-next-line no-console
+    console.log(event);
+  };
+
   handleEditClose = () => {
     this.setState({
       editOpen: false,
@@ -137,11 +136,11 @@ class traineeList extends React.Component {
   };
 
   handlePageChange = (refetch) => (event, newPage) => {
-    const { rowsPerPage } = this.state;
+    const { data: { variables } } = this.props;
     this.setState({
       page: newPage,
     }, () => {
-      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
+      refetch({ variables });
     });
   }
 
@@ -154,7 +153,6 @@ class traineeList extends React.Component {
       data: {
         getAllTrainees: { Trainees = [], count = 0 } = {},
         refetch,
-        // loading,
       },
     } = this.props;
     const variables = { skip: page * rowsPerPage.length, limit: rowsPerPage.length };
@@ -275,6 +273,6 @@ traineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE, {
-    options: { variables: { skip: 0, limit: 20 } },
+    options: { variables: { skip: 0, limit: 100 } },
   }),
 )(traineeList);
