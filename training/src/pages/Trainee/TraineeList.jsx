@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 /* eslint-disable react/prop-types */
 /* eslint-disable consistent-return */
+=======
+>>>>>>> 192ee21f319709e204a6fb4f3703640d5ea0063a
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -13,8 +16,11 @@ import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { TableComponent } from '../../components';
 import { useStyles } from './traineeStyle';
 import { GET_TRAINEE } from './Query';
+<<<<<<< HEAD
 import { SnackBarContext } from '../../context/index';
 import { UPDATE_TRAINEE, CREATE_TRAINEE } from './Mutation';
+=======
+>>>>>>> 192ee21f319709e204a6fb4f3703640d5ea0063a
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -116,6 +122,7 @@ class traineeList extends React.Component {
     });
   };
 
+<<<<<<< HEAD
   onSubmitEdit = async (data, openSnackBar, updateTrainee, refetch) => {
     try {
       const { name, email, id } = data;
@@ -135,6 +142,8 @@ class traineeList extends React.Component {
     }
   };
 
+=======
+>>>>>>> 192ee21f319709e204a6fb4f3703640d5ea0063a
   handlePageChange = (refetch) => (event, newPage) => {
     const { data: { variables } } = this.props;
     this.setState({
@@ -155,7 +164,10 @@ class traineeList extends React.Component {
         refetch,
       },
     } = this.props;
+<<<<<<< HEAD
     const variables = { skip: page * rowsPerPage.length, limit: rowsPerPage.length };
+=======
+>>>>>>> 192ee21f319709e204a6fb4f3703640d5ea0063a
     return (
       <>
         <Mutation
@@ -273,6 +285,6 @@ traineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE, {
-    options: { variables: { skip: 0, limit: 100 } },
+    options: { variables: { skip: 0, limit: 2 } },
   }),
 )(traineeList);
