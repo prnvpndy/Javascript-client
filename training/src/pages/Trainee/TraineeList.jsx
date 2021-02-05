@@ -1,3 +1,6 @@
+/* eslint-disable radix */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, withStyles } from '@material-ui/core';
@@ -12,7 +15,7 @@ import { useStyles } from './traineeStyle';
 import { GET_TRAINEE } from './Query';
 import { SnackBarContext } from '../../context/index';
 import { UPDATE_TRAINEE, CREATE_TRAINEE } from './Mutation';
-import { UPDATED_TRAINEE_SUB, DELETED_TRAINEE_SUB } from './Subscription';
+import { UPDATED_TRAINEE_SUB, DELETED_TRAINEE_SUB, CREATE_SUB } from './Subscription';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -173,12 +176,29 @@ class traineeList extends React.Component {
         if (!subscriptionData) return prev;
         const { getAllTrainees: { Trainees } } = prev;
         const { data: { traineeDeleted } } = subscriptionData;
-        // eslint-disable-next-line max-len
         const updatedRecords = [...Trainees].filter((records) => records.originalId !== traineeDeleted.data.originalId);
         return {
           getAllTrainees: {
             ...prev.getAllTrainees,
             ...prev.getAllTrainees.TraineeCount - 1,
+            Trainees: updatedRecords,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: CREATE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { Trainees } } = prev;
+        const { data: { traineeAdded } } = subscriptionData;
+
+        Trainees.unshift(traineeAdded);
+        const updatedRecords = [...Trainees].unshift((records) => records.originalId !== traineeAdded.originalId);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            totalCountOfData: parseInt(prev.getAllTrainees.TraineeCount) + 1,
             Trainees: updatedRecords,
           },
         };
