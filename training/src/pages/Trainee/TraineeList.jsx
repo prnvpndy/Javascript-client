@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable consistent-return */
+/* eslint-disable radix */
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -15,6 +15,7 @@ import { useStyles } from './traineeStyle';
 import { GET_TRAINEE } from './Query';
 import { SnackBarContext } from '../../context/index';
 import { UPDATE_TRAINEE, CREATE_TRAINEE } from './Mutation';
+import { UPDATED_TRAINEE_SUB, DELETED_TRAINEE_SUB, CREATE_SUB } from './Subscription';
 
 class traineeList extends React.Component {
   constructor(props) {
@@ -100,7 +101,6 @@ class traineeList extends React.Component {
   };
 
   handleSelect = (event) => {
-    // eslint-disable-next-line no-console
     console.log(event);
   };
 
@@ -141,6 +141,68 @@ class traineeList extends React.Component {
       page: newPage,
     }, () => {
       refetch({ variables });
+    });
+  }
+
+  componentDidMount = () => {
+    const { data: { subscribeToMore } } = this.props;
+    subscribeToMore({
+      document: UPDATED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { Trainees } } = prev;
+        const { data: { traineeUpdated } } = subscriptionData;
+        const updatedRecords = [...Trainees].map((records) => {
+          if (records.originalId === traineeUpdated.originalId) {
+            return {
+              ...records,
+              ...traineeUpdated,
+            };
+          }
+          return records;
+        });
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.TraineeCount,
+            Trainees: updatedRecords,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: DELETED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { Trainees } } = prev;
+        const { data: { traineeDeleted } } = subscriptionData;
+        const updatedRecords = [...Trainees].filter((records) => records.originalId !== traineeDeleted.data.originalId);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.TraineeCount - 1,
+            Trainees: updatedRecords,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: CREATE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { Trainees } } = prev;
+        const { data: { traineeAdded } } = subscriptionData;
+
+        Trainees.unshift(traineeAdded);
+        const updatedRecords = [...Trainees].unshift((records) => records.originalId !== traineeAdded.originalId);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            totalCountOfData: parseInt(prev.getAllTrainees.TraineeCount) + 1,
+            Trainees: updatedRecords,
+          },
+        };
+      },
     });
   }
 
